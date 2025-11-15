@@ -40,6 +40,7 @@ void test_tokenize() {
     equation.tokens++;
     TEST_ASSERT_EQUAL(X, equation.tokens->type);
     TEST_ASSERT_EQUAL(8, equation.tokens->value);
+    TEST_ASSERT_EQUAL(11, equation.size);
     equation.tokens -= 10;
     free(equation.tokens);
 }

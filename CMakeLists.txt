@@ -10,6 +10,9 @@ add_executable(equation_solver main.c
         src/model/TokenType.h
         src/Solver.h
         src/Solver.c
-        src/model/Equation.h)
+        src/model/Equation.h
+        src/Interpreter.h
+        src/model/Node.h
+        src/Interpreter.c)
 
 add_subdirectory(tests)

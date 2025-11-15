@@ -4,6 +4,7 @@
 
 #ifndef EQUATION_SOLVER_TOKENIZER_H
 #define EQUATION_SOLVER_TOKENIZER_H
+#include "./model/Equation.h"
 
 struct Equation tokenize(const char* text);
 

@@ -1,1 +1,1 @@
-Equation solver written in C using Test Driven Development
+Equation solver developed using Test Driven Development

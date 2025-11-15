@@ -1,0 +1,10 @@
+//
+// Created by nicholas on 15/11/2025.
+//
+
+#ifndef EQUATION_SOLVER_TESTINTERPRETER_H
+#define EQUATION_SOLVER_TESTINTERPRETER_H
+
+void testInterpreter_runTests();
+
+#endif //EQUATION_SOLVER_TESTINTERPRETER_H
