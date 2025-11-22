@@ -7,42 +7,42 @@
 #include <sys/wait.h>
 #include "../Unity/src/unity.h"
 #include "../src/Tokenizer.h"
-#include "../src/model/Equation.h"
 #include "../src/model/Token.h"
 #include "../src/model/TokenType.h"
 
 void test_tokenize() {
-    struct Equation equation = tokenize("x + 43 - 652 = 10 + 982x - 8x");
-    TEST_ASSERT_EQUAL(X, equation.tokens->type);
-    TEST_ASSERT_EQUAL(1, equation.tokens->value);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(PLUS, equation.tokens->type);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(NUMBER, equation.tokens->type);
-    TEST_ASSERT_EQUAL(43, equation.tokens->value);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(MINUS, equation.tokens->type);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(NUMBER, equation.tokens->type);
-    TEST_ASSERT_EQUAL(652, equation.tokens->value);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(EQUALS, equation.tokens->type);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(NUMBER, equation.tokens->type);
-    TEST_ASSERT_EQUAL(10, equation.tokens->value);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(PLUS, equation.tokens->type);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(X, equation.tokens->type);
-    TEST_ASSERT_EQUAL(982, equation.tokens->value);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(MINUS, equation.tokens->type);
-    equation.tokens++;
-    TEST_ASSERT_EQUAL(X, equation.tokens->type);
-    TEST_ASSERT_EQUAL(8, equation.tokens->value);
-    TEST_ASSERT_EQUAL(11, equation.size);
-    equation.tokens -= 10;
-    free(equation.tokens);
+    struct Token *tokens = tokenize("x + 43 - 652 = 10 + 982x - 8x");
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(1, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(43, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(652, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(10, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(982, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 11;
+    free(tokens);
 }
 
 //In order to test the exit with an error code called by the tokenize function, we need to create a separate process so the tests process is not stopped

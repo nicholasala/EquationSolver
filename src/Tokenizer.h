@@ -4,8 +4,8 @@
 
 #ifndef EQUATION_SOLVER_TOKENIZER_H
 #define EQUATION_SOLVER_TOKENIZER_H
-#include "./model/Equation.h"
+#include "./model/Token.h"
 
-struct Equation tokenize(const char* text);
+struct Token* tokenize(const char* text);
 
 #endif //EQUATION_SOLVER_TOKENIZER_H

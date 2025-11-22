@@ -5,6 +5,6 @@
 #ifndef EQUATION_SOLVER_TESTINTERPRETER_H
 #define EQUATION_SOLVER_TESTINTERPRETER_H
 
-void testInterpreter_runTests();
+void testSolver_runTests();
 
 #endif //EQUATION_SOLVER_TESTINTERPRETER_H

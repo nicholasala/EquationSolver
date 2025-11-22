@@ -12,6 +12,7 @@ enum TokenType {
   MINUS = '-',
   EQUALS = '=',
   EMPTY = ' ',
+  END = '\n'
 };
 
 #endif //EQUATION_SOLVER_TOKENTYPE_H
