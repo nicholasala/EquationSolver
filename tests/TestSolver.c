@@ -4,6 +4,7 @@
 #include "TestSolver.h"
 #include "../src/Solver.h"
 #include "../Unity/src/unity.h"
+#define FLOAT_DELTA 0.0001
 
 void test_solve() {
     float result = solve("x = 6");
@@ -25,6 +26,16 @@ void test_solve4() {
     TEST_ASSERT_EQUAL(-6, result);
 }
 
+void test_solve5() {
+    float result = solve("-9x = 8");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, -0.8888, result);
+}
+
+void test_solve6() {
+    float result = solve("x + 42x + 45= 7345 - 2x");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 162.2222, result);
+}
+
 //TODO test error cases
 
 void testSolver_runTests() {
@@ -32,4 +43,6 @@ void testSolver_runTests() {
     RUN_TEST(test_solve2);
     RUN_TEST(test_solve3);
     RUN_TEST(test_solve4);
+    RUN_TEST(test_solve5);
+    RUN_TEST(test_solve6);
 }
