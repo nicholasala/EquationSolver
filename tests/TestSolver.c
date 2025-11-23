@@ -8,22 +8,22 @@
 
 void test_solve() {
     float result = solve("x = 6");
-    TEST_ASSERT_EQUAL(6, result);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA,6, result);
 }
 
 void test_solve2() {
     float result = solve("x + 4 =");
-    TEST_ASSERT_EQUAL(-4, result);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA,-4, result);
 }
 
 void test_solve3() {
     float result = solve("x + 4 = 8 - 7x");
-    TEST_ASSERT_EQUAL(0.5, result);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.5, result);
 }
 
 void test_solve4() {
     float result = solve("x + 45x - 89 + 2 = 8 - 7x + 64x - 29");
-    TEST_ASSERT_EQUAL(-6, result);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA,-6, result);
 }
 
 void test_solve5() {
