@@ -40,16 +40,25 @@ float calculateValueOnRight(struct Token *tokens, enum TokenType type) {
     return - calculateValue(tokens, type);
 }
 
-float solve(char *text) {
-    struct Token *tokens = tokenize(text);
-    float xValue = calculateValue(tokens, X);
+bool checkXExists(struct Token *tokens) {
+    struct Token *cursor = tokens;
 
-    if (xValue == 0) {
-        fprintf(stderr, "%s\n", "Variable x not found");
-        exit(1);
+    while (cursor->type != END) {
+        if (cursor->type == X) return true;
+        cursor++;
     }
 
-    float result = calculateValueOnRight(tokens, NUMBER) / xValue;
+    return false;
+}
+
+float solve(char *text) {
+    struct Token *tokens = tokenize(text);
+    float result = 0;
+
+    if (checkXExists(tokens)) {
+        float xValue = calculateValue(tokens, X);
+        if (xValue != 0) result = calculateValueOnRight(tokens, NUMBER) / xValue;
+    }
 
     free(tokens);
     return result;

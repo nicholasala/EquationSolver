@@ -36,7 +36,15 @@ void test_solve6() {
     TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 162.2222, result);
 }
 
-//TODO test error cases
+void test_solve7() {
+    float result = solve("x + 42x = 42x + x");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0, result);
+}
+
+void test_solve8() {
+    float result = solve("8 =");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0, result);
+}
 
 void testSolver_runTests() {
     RUN_TEST(test_solve);
@@ -45,4 +53,6 @@ void testSolver_runTests() {
     RUN_TEST(test_solve4);
     RUN_TEST(test_solve5);
     RUN_TEST(test_solve6);
+    RUN_TEST(test_solve7);
+    RUN_TEST(test_solve8);
 }
