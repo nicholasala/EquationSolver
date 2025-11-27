@@ -48,7 +48,6 @@ struct Token* tokenize(const char *text) {
     const size_t len = strlen(text);
     struct Token *tokens = malloc((countTokens(text, len) + 1) * sizeof(struct Token));
     int tokenCursor = 0;
-    bool hasEquals = false;
 
     for (int i = 0; i < len; i++) {
         switch (text[i]) {
@@ -76,16 +75,9 @@ struct Token* tokenize(const char *text) {
                 tokenCursor++;
                 break;
             case EQUALS:
-                if(hasEquals) {
-                    free(tokens);
-                    fprintf(stderr, "%s\n", "Two equals are not accepted");
-                    exit(1);
-                }
-
                 tokens[tokenCursor].type = EQUALS;
                 tokens[tokenCursor].value = 0;
                 tokenCursor++;
-                hasEquals = true;
                 break;
             default:
                 if(isDigit(text[i])) {

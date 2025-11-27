@@ -84,18 +84,6 @@ void test_wrongVariableFromat() {
     TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
 }
 
-void test_tokenizeTwoEquals() {
-    pid_t pid = fork();
-    if (pid == 0) {
-        tokenize("x + 8 = 62=");
-        exit(0);
-    }
-
-    int status;
-    wait(&status);
-    TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
-}
-
 void test_tokenizeUnexpectedCharacter() {
     pid_t pid = fork();
     if (pid == 0) {
@@ -125,7 +113,6 @@ void testTokenizer_runTests() {
     RUN_TEST(test_tokenizeTooManyEquationTokens);
     RUN_TEST(test_tokenizeTooLongEquation);
     RUN_TEST(test_wrongVariableFromat);
-    RUN_TEST(test_tokenizeTwoEquals);
     RUN_TEST(test_tokenizeUnexpectedCharacter);
     RUN_TEST(test_tokenizeUnexpectedFloatNumber);
 }
