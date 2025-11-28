@@ -4,6 +4,7 @@
 #include "../Unity/src/unity.h"
 #include "TestTokenizer.h"
 #include "TestSolver.h"
+#include "TestGrammarChecker.h"
 
 void setUp() { }
 
@@ -13,6 +14,7 @@ int main() {
     UNITY_BEGIN();
     testTokenizer_runTests();
     testSolver_runTests();
+    testGrammarChecker_runTests();
     UNITY_END();
     return 0;
 }

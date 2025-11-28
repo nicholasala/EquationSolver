@@ -2,6 +2,7 @@ add_executable(tests ../Unity/src/unity.h
     ../Unity/src/unity.c
     ../src/Tokenizer.c
     ../src/Solver.c
+    ../src/GrammarChecker.c
     ../src/model/Token.h
     ../src/model/TokenType.h
     TestTokenizer.c
@@ -9,4 +10,6 @@ add_executable(tests ../Unity/src/unity.h
     main.c
     TestSolver.c
     TestSolver.h
+    TestGrammarChecker.c
+    TestGrammarChecker.h
 )

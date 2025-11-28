@@ -10,6 +10,9 @@ add_executable(equation_solver main.c
         src/model/TokenType.h
         src/Solver.h
         src/Solver.c
+        src/GrammarChecker.h
+        src/GrammarChecker.c
+        src/model/GrammarCheckResult.h
 )
 
 add_subdirectory(tests)
