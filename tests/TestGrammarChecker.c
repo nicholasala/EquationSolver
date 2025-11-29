@@ -8,6 +8,12 @@
 #include "../src/GrammarChecker.h"
 #include "../src/model/GrammarCheckResult.h"
 
+void test_checkGrammarOkEquation() {
+    struct Token *tokens = tokenize("x + 7 = 10 - 9");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_TRUE(result.ok);
+}
+
 //No x found
 void test_checkGrammarNoXFound() {
     struct Token *tokens = tokenize("8 =");
@@ -16,20 +22,12 @@ void test_checkGrammarNoXFound() {
     TEST_ASSERT_EQUAL_CHAR_ARRAY("No x found", result.error, 10);
 }
 
-//Equation can't start with operator
-void test_checkGrammarStartWithOperator() {
-    struct Token *tokens = tokenize("+ 8x = 16");
-    struct GrammarCheckResult result = checkGrammar(tokens);
-    TEST_ASSERT_FALSE(result.ok);
-    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't start with an operator", result.error, 37);
-}
-
 //Equation must have an equal
 void test_checkGrammarNoEqualFound() {
     struct Token *tokens = tokenize("18 + 9x");
     struct GrammarCheckResult result = checkGrammar(tokens);
     TEST_ASSERT_FALSE(result.ok);
-    TEST_ASSERT_EQUAL_CHAR_ARRAY("No equal found", result.error, 14);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation must have one equal", result.error, 28);
 }
 
 //Equation can't have two equals
@@ -37,7 +35,7 @@ void test_checkGrammarTwoEqualsFound() {
     struct Token *tokens = tokenize("2x + 4 = 54 =");
     struct GrammarCheckResult result = checkGrammar(tokens);
     TEST_ASSERT_FALSE(result.ok);
-    TEST_ASSERT_EQUAL_CHAR_ARRAY("Only one equal accepted", result.error, 23);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation must have one equal", result.error, 28);
 }
 
 //Equation should respect orders of operators and variables/numbers
@@ -45,7 +43,7 @@ void test_checkGrammarWrongVariablesOrder() {
     struct Token *tokens = tokenize("2x 4x = 9 + 3");
     struct GrammarCheckResult result = checkGrammar(tokens);
     TEST_ASSERT_FALSE(result.ok);
-    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong variables/number number", result.error, 29);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong order in between variables/numbers and operators", result.error, 54);
 }
 
 //Equation should respect orders of operators and variables/numbers
@@ -53,12 +51,12 @@ void test_checkGrammarWrongOperatorsOrder() {
     struct Token *tokens = tokenize("2x + - 1 = 9 + 3");
     struct GrammarCheckResult result = checkGrammar(tokens);
     TEST_ASSERT_FALSE(result.ok);
-    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong operators order", result.error, 21);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong order in between variables/numbers and operators", result.error, 54);
 }
 
 void testGrammarChecker_runTests() {
+    RUN_TEST(test_checkGrammarOkEquation);
     RUN_TEST(test_checkGrammarNoXFound);
-    RUN_TEST(test_checkGrammarStartWithOperator);
     RUN_TEST(test_checkGrammarNoEqualFound);
     RUN_TEST(test_checkGrammarTwoEqualsFound);
     RUN_TEST(test_checkGrammarWrongVariablesOrder);

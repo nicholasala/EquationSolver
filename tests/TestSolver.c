@@ -4,6 +4,9 @@
 #include "TestSolver.h"
 #include "../src/Solver.h"
 #include "../Unity/src/unity.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #define FLOAT_DELTA 0.0001
 
 void test_solve() {
@@ -41,7 +44,17 @@ void test_solve7() {
     TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0, result);
 }
 
-//TODO check that the grammar checker is used with an error
+void test_solveGrammarError() {
+    pid_t pid = fork();
+    if (pid == 0) {
+        solve("2x 6x = 9");
+        exit(0);
+    }
+
+    int status;
+    wait(&status);
+    TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
+}
 
 void testSolver_runTests() {
     RUN_TEST(test_solve);
@@ -51,4 +64,5 @@ void testSolver_runTests() {
     RUN_TEST(test_solve5);
     RUN_TEST(test_solve6);
     RUN_TEST(test_solve7);
+    RUN_TEST(test_solveGrammarError);
 }

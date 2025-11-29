@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Tokenizer.h"
+#include "GrammarChecker.h"
 #include "model/Token.h"
+#include "model/GrammarCheckResult.h"
 
 /**
     * Calculate the value of a given type in the equation
@@ -40,25 +42,18 @@ float calculateValueOnRight(struct Token *tokens, enum TokenType type) {
     return - calculateValue(tokens, type);
 }
 
-bool checkXExists(struct Token *tokens) {
-    struct Token *cursor = tokens;
-
-    while (cursor->type != END) {
-        if (cursor->type == X) return true;
-        cursor++;
-    }
-
-    return false;
-}
-
 float solve(char *text) {
     struct Token *tokens = tokenize(text);
-    float result = 0;
+    struct GrammarCheckResult grammarCheckResult = checkGrammar(tokens);
 
-    if (checkXExists(tokens)) {
-        float xValue = calculateValue(tokens, X);
-        if (xValue != 0) result = calculateValueOnRight(tokens, NUMBER) / xValue;
+    if (!grammarCheckResult.ok) {
+        fprintf(stderr, "%s\n", grammarCheckResult.error);
+        exit(1);
     }
+
+    float result = 0;
+    float xValue = calculateValue(tokens, X);
+    if (xValue != 0) result = calculateValueOnRight(tokens, NUMBER) / xValue;
 
     free(tokens);
     return result;
