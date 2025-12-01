@@ -83,6 +83,8 @@ void test_tokenizeComplex() {
     free(tokens);
 }
 
+//TODO test case: x + 5 = 8 +* 7 only the grammar checker should throw exception
+
 //In order to test the exit with an error code called by the tokenize function, we need to create a separate process so the tests process is not stopped
 void test_tokenizeTooManyEquationTokens() {
     pid_t pid = fork();

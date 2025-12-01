@@ -74,6 +74,11 @@ struct Token* tokenize(const char *equation) {
                 tokens[tokenCursor].value = 0;
                 tokenCursor++;
                 break;
+            case TIMES:
+                tokens[tokenCursor].type = TIMES;
+                tokens[tokenCursor].value = 0;
+                tokenCursor++;
+                break;
             case EQUALS:
                 tokens[tokenCursor].type = EQUALS;
                 tokens[tokenCursor].value = 0;
