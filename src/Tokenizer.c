@@ -44,17 +44,17 @@ int charToInt(char c) {
     return c - '0';
 }
 
-struct Token* tokenize(const char *text) {
-    const size_t len = strlen(text);
-    struct Token *tokens = malloc((countTokens(text, len) + 1) * sizeof(struct Token));
+struct Token* tokenize(const char *equation) {
+    const size_t len = strlen(equation);
+    struct Token *tokens = malloc((countTokens(equation, len) + 1) * sizeof(struct Token));
     int tokenCursor = 0;
 
     for (int i = 0; i < len; i++) {
-        switch (text[i]) {
+        switch (equation[i]) {
             case EMPTY:
                 break;
             case X:
-                if(i < len - 1 && isDigit(text[i + 1])) {
+                if(i < len - 1 && isDigit(equation[i + 1])) {
                     free(tokens);
                     fprintf(stderr, "%s\n", "Format x(number) not accepted");
                     exit(1);
@@ -80,17 +80,17 @@ struct Token* tokenize(const char *text) {
                 tokenCursor++;
                 break;
             default:
-                if(isDigit(text[i])) {
+                if(isDigit(equation[i])) {
                     tokens[tokenCursor].type = NUMBER;
-                    int value = charToInt(text[i]);
+                    int value = charToInt(equation[i]);
 
-                    while(i < len - 1 && isDigit(text[i + 1])) {
+                    while(i < len - 1 && isDigit(equation[i + 1])) {
                         value *= 10;
-                        value += charToInt(text[i + 1]);
+                        value += charToInt(equation[i + 1]);
                         i++;
                     }
 
-                    if (i < len - 1 && text[i + 1] == X) {
+                    if (i < len - 1 && equation[i + 1] == X) {
                         tokens[tokenCursor].type = X;
                         i++;
                     }
@@ -99,7 +99,7 @@ struct Token* tokenize(const char *text) {
                     tokenCursor++;
                 } else {
                     free(tokens);
-                    fprintf(stderr, "%s %c %s\n", "Character", text[i], "not valid");
+                    fprintf(stderr, "%s %c %s\n", "Character", equation[i], "not valid");
                     exit(1);
                 }
         }

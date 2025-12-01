@@ -45,6 +45,44 @@ void test_tokenize() {
     free(tokens);
 }
 
+void test_tokenizeComplex() {
+    struct Token *tokens = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5");
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(1, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(4, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(10, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(16, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(5, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(5, tokens->value);
+    tokens -= 12;
+    free(tokens);
+}
+
 //In order to test the exit with an error code called by the tokenize function, we need to create a separate process so the tests process is not stopped
 void test_tokenizeTooManyEquationTokens() {
     pid_t pid = fork();
@@ -110,6 +148,7 @@ void test_tokenizeUnexpectedFloatNumber() {
 
 void testTokenizer_runTests() {
     RUN_TEST(test_tokenize);
+    RUN_TEST(test_tokenizeComplex);
     RUN_TEST(test_tokenizeTooManyEquationTokens);
     RUN_TEST(test_tokenizeTooLongEquation);
     RUN_TEST(test_wrongVariableFromat);

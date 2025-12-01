@@ -6,6 +6,6 @@
 #define EQUATION_SOLVER_TOKENIZER_H
 #include "./model/Token.h"
 
-struct Token* tokenize(const char* text);
+struct Token* tokenize(const char* equation);
 
 #endif //EQUATION_SOLVER_TOKENIZER_H

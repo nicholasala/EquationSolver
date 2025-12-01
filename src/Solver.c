@@ -11,7 +11,7 @@
 
 /**
     * Calculate the value of a given type in the equation
-    * @param {Token*} tokens - the tokens of the equation
+    * @param {Token} *tokens - the tokens of the equation
     * @param {TokenType} type - the token type of the wanted value (X, NUMBER, ...)
     */
 float calculateValue(struct Token *tokens, enum TokenType type) {

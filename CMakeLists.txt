@@ -13,6 +13,8 @@ add_executable(equation_solver main.c
         src/GrammarChecker.h
         src/GrammarChecker.c
         src/model/GrammarCheckResult.h
+        src/simplifier/MultiplicationSimplifier.h
+        src/simplifier/MultiplicationSimplifier.c
 )
 
 add_subdirectory(tests)

@@ -5,6 +5,7 @@
 #include "TestTokenizer.h"
 #include "TestSolver.h"
 #include "TestGrammarChecker.h"
+#include "TestMultiplicationSimplifier.h"
 
 void setUp() { }
 
@@ -15,6 +16,7 @@ int main() {
     testTokenizer_runTests();
     testSolver_runTests();
     testGrammarChecker_runTests();
+    testMultiplicationSimplifier_runTests();
     UNITY_END();
     return 0;
 }

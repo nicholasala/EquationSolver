@@ -10,6 +10,7 @@ enum TokenType {
   NUMBER = '0',
   PLUS = '+',
   MINUS = '-',
+  TIMES = '*',
   EQUALS = '=',
   EMPTY = ' ',
   END = '\n'
