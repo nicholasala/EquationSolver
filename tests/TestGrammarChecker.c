@@ -54,6 +54,70 @@ void test_checkGrammarWrongOperatorsOrder() {
     TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong order in between variables/numbers and operators", result.error, 54);
 }
 
+//Equation should respect orders of operators and variables/numbers
+void test_checkGrammarWrongOperatorsOrderWithTimes() {
+    struct Token *tokens = tokenize("2x +* 1 = 9 + 3");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong order in between variables/numbers and operators", result.error, 54);
+}
+
+//Equation should respect orders of operators and variables/numbers
+void test_checkGrammarWrongOperatorsOrderWithDivide() {
+    struct Token *tokens = tokenize("2x /- 1 = 9 + 3");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong order in between variables/numbers and operators", result.error, 54);
+}
+
+//Equation can't begin with times
+void test_checkGrammarBeginWithTimes() {
+    struct Token *tokens = tokenize("* 2x + 1 = 9 + 3");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't begin with times", result.error, 31);
+}
+
+//Equation can't begin with divide
+void test_checkGrammarBeginWithDivide() {
+    struct Token *tokens = tokenize("/ 2x + 1 = 9 + 3");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't begin with divide", result.error, 32);
+}
+
+//Equation can't end with operator
+void test_checkGrammarEndWithOperator() {
+    struct Token *tokens = tokenize("2x + 1 = 9 + 3 *");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't end with operator", result.error, 54);
+}
+
+//Equation can't have an operator before equals
+void test_checkGrammarOperatorBeforeEquals() {
+    struct Token *tokens = tokenize("2x + 1 -= 9 + 3");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't have an operator before equals", result.error, 54);
+}
+
+//Equation can't have times after equals
+void test_checkGrammarTimesAfterEquals() {
+    struct Token *tokens = tokenize("2x + 1 =* 9 + 3");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't have times after equals", result.error, 38);
+}
+
+//Equation can't have divide after equals
+void test_checkGrammarDivideAfterEquals() {
+    struct Token *tokens = tokenize("2x + 1 =/ 9 + 3 ");
+    struct GrammarCheckResult result = checkGrammar(tokens);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't have divide after equals", result.error, 39);
+}
+
 void testGrammarChecker_runTests() {
     RUN_TEST(test_checkGrammarOkEquation);
     RUN_TEST(test_checkGrammarNoXFound);
@@ -61,4 +125,12 @@ void testGrammarChecker_runTests() {
     RUN_TEST(test_checkGrammarTwoEqualsFound);
     RUN_TEST(test_checkGrammarWrongVariablesOrder);
     RUN_TEST(test_checkGrammarWrongOperatorsOrder);
+    RUN_TEST(test_checkGrammarWrongOperatorsOrderWithTimes);
+    RUN_TEST(test_checkGrammarWrongOperatorsOrderWithDivide);
+    RUN_TEST(test_checkGrammarBeginWithTimes);
+    RUN_TEST(test_checkGrammarBeginWithDivide);
+    RUN_TEST(test_checkGrammarEndWithOperator);
+    RUN_TEST(test_checkGrammarOperatorBeforeEquals);
+    RUN_TEST(test_checkGrammarTimesAfterEquals);
+    RUN_TEST(test_checkGrammarDivideAfterEquals);
 }

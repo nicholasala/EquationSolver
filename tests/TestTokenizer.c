@@ -45,7 +45,7 @@ void test_tokenize() {
     free(tokens);
 }
 
-void test_tokenizeComplex() {
+void test_tokenizeWithTimes() {
     struct Token *tokens = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5");
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
@@ -83,7 +83,77 @@ void test_tokenizeComplex() {
     free(tokens);
 }
 
-//TODO test case: x + 5 = 8 +* 7 only the grammar checker should throw exception
+void test_tokenizeWithDivide() {
+    struct Token *tokens = tokenize("10 / 2 - 8 = 4x / 1 - 5 / 5");
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(1, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(DIVIDE, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(4, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(10, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(DIVIDE, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(16, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(5, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(DIVIDE, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(5, tokens->value);
+    tokens -= 12;
+    free(tokens);
+}
+
+void test_tokenizeWithoutSpaces() {
+    struct Token *tokens = tokenize("6x+8*-=4+3x/3");
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(6, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(4, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(3, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(DIVIDE, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(3, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 11;
+    free(tokens);
+}
 
 //In order to test the exit with an error code called by the tokenize function, we need to create a separate process so the tests process is not stopped
 void test_tokenizeTooManyEquationTokens() {

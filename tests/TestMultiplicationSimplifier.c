@@ -2,9 +2,7 @@
 // Created by nicholas on 1/12/2025.
 //
 #include "TestMultiplicationSimplifier.h"
-
 #include <stdlib.h>
-
 #include "../Unity/src/unity.h"
 #include "../src/Tokenizer.h"
 #include "../src/simplifier/MultiplicationSimplifier.h"

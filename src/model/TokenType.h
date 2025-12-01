@@ -11,6 +11,7 @@ enum TokenType {
   PLUS = '+',
   MINUS = '-',
   TIMES = '*',
+  DIVIDE = '/',
   EQUALS = '=',
   EMPTY = ' ',
   END = '\n'
