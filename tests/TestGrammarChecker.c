@@ -40,7 +40,7 @@ void test_checkGrammarTwoEqualsFound() {
 
 //Equation should respect orders of operators and variables/numbers
 void test_checkGrammarWrongVariablesOrder() {
-    struct Token *tokens = tokenize("2x 4x = 9 + 3");
+    struct Token *tokens = tokenize("2x 4 = 9 + 3");
     struct GrammarCheckResult result = checkGrammar(tokens);
     TEST_ASSERT_FALSE(result.ok);
     TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong order in between variables/numbers and operators", result.error, 54);

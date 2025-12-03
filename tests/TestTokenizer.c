@@ -45,6 +45,26 @@ void test_tokenize() {
     free(tokens);
 }
 
+void test_tokenizeWithdifferentVariableOrder() {
+    struct Token *tokens = tokenize("x + x8= 62");
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(1, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(62, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 5;
+    free(tokens);
+}
+
 void test_tokenizeWithTimes() {
     struct Token *tokens = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5");
     TEST_ASSERT_EQUAL(X, tokens->type);
@@ -84,29 +104,24 @@ void test_tokenizeWithTimes() {
 }
 
 void test_tokenizeWithDivide() {
-    struct Token *tokens = tokenize("10 / 2 - 8 = 4x / 1 - 5 / 5");
+    struct Token *tokens = tokenize("10x / 2 = 4 / 1 - 5 / 5");
     TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(1, tokens->value);
-    tokens++;
-    TEST_ASSERT_EQUAL(DIVIDE, tokens->type);
-    tokens++;
-    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(4, tokens->value);
-    tokens++;
-    TEST_ASSERT_EQUAL(MINUS, tokens->type);
-    tokens++;
-    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(8, tokens->value);
-    tokens++;
-    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
-    tokens++;
-    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
     TEST_ASSERT_EQUAL(10, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(DIVIDE, tokens->type);
     tokens++;
-    TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(16, tokens->value);
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(2, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(4, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(DIVIDE, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(MINUS, tokens->type);
     tokens++;
@@ -117,7 +132,7 @@ void test_tokenizeWithDivide() {
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
     TEST_ASSERT_EQUAL(5, tokens->value);
-    tokens -= 12;
+    tokens -= 10;
     free(tokens);
 }
 
@@ -182,18 +197,6 @@ void test_tokenizeTooLongEquation() {
     TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
 }
 
-void test_wrongVariableFromat() {
-    pid_t pid = fork();
-    if (pid == 0) {
-        tokenize("x + x8= 62");
-        exit(0);
-    }
-
-    int status;
-    wait(&status);
-    TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
-}
-
 void test_tokenizeUnexpectedCharacter() {
     pid_t pid = fork();
     if (pid == 0) {
@@ -220,10 +223,12 @@ void test_tokenizeUnexpectedFloatNumber() {
 
 void testTokenizer_runTests() {
     RUN_TEST(test_tokenize);
-    RUN_TEST(test_tokenizeComplex);
+    RUN_TEST(test_tokenizeWithdifferentVariableOrder);
+    RUN_TEST(test_tokenizeWithTimes);
+    RUN_TEST(test_tokenizeWithDivide);
+    RUN_TEST(test_tokenizeWithoutSpaces);
     RUN_TEST(test_tokenizeTooManyEquationTokens);
     RUN_TEST(test_tokenizeTooLongEquation);
-    RUN_TEST(test_wrongVariableFromat);
     RUN_TEST(test_tokenizeUnexpectedCharacter);
     RUN_TEST(test_tokenizeUnexpectedFloatNumber);
 }

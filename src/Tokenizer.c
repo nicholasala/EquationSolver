@@ -7,34 +7,10 @@
 #include <string.h>
 #include "model/TokenType.h"
 #include "model/Token.h"
-#define MAX_LENGTH 255
-#define MAX_TOKENS 50
 
-int countTokens(const char *equation, const size_t len) {
-    if (len > MAX_LENGTH) {
-        fprintf(stderr, "%s %lu %s %d\n", "Too long equation. Inserted", len, "characters with maximum", MAX_LENGTH);
-        exit(1);
-    }
-
-    int count = 0;
-
-    for (int i = 0; i < len; i++) {
-        switch (equation[i]) {
-            case EMPTY:
-                break;
-            default:
-                if (i > 0 && equation[i - 1] != EMPTY && equation[i] != EQUALS) break;
-                count++;
-        }
-    }
-
-    if (count > MAX_TOKENS) {
-        fprintf(stderr, "%s %d %s %d\n", "Too many equation tokens. Inserted", count, "tokens with maximum", MAX_TOKENS);
-        exit(1);
-    }
-
-    return count;
-}
+//The maximum number of tokens accepted in the equation, which is one token per character considering an equation written without empty spaces in between tokens
+// strlen("x+3-6=2+4*x-1...") <= MAX_TOKENS
+#define MAX_TOKENS 255
 
 bool isDigit(char c) {
     return c >= '0' && c <= '9';
@@ -46,7 +22,13 @@ int charToInt(char c) {
 
 struct Token* tokenize(const char *equation) {
     const size_t len = strlen(equation);
-    struct Token *tokens = malloc((countTokens(equation, len) + 1) * sizeof(struct Token));
+
+    if (len > MAX_TOKENS) {
+        fprintf(stderr, "%s %lu %s %d\n", "Too long equation. Inserted", len, "characters with maximum", MAX_TOKENS);
+        exit(1);
+    }
+
+    struct Token *tokens = malloc((MAX_TOKENS + 1) * sizeof(struct Token));
     int tokenCursor = 0;
 
     for (int i = 0; i < len; i++) {
@@ -54,59 +36,40 @@ struct Token* tokenize(const char *equation) {
             case EMPTY:
                 break;
             case X:
-                if(i < len - 1 && isDigit(equation[i + 1])) {
-                    free(tokens);
-                    fprintf(stderr, "%s\n", "Format x(number) not accepted");
-                    exit(1);
-                }
-
-                tokens[tokenCursor].type = X;
-                tokens[tokenCursor].value = 1;
-                tokenCursor++;
+                tokens[tokenCursor++] = (struct Token) { X, 1 };
                 break;
             case PLUS:
-                tokens[tokenCursor].type = PLUS;
-                tokens[tokenCursor].value = 0;
-                tokenCursor++;
+                tokens[tokenCursor++] = (struct Token) { PLUS, 0 };
                 break;
             case MINUS:
-                tokens[tokenCursor].type = MINUS;
-                tokens[tokenCursor].value = 0;
-                tokenCursor++;
+                tokens[tokenCursor++] = (struct Token) { MINUS, 0 };
                 break;
             case TIMES:
-                tokens[tokenCursor].type = TIMES;
-                tokens[tokenCursor].value = 0;
-                tokenCursor++;
+                tokens[tokenCursor++] = (struct Token) { TIMES, 0 };
                 break;
             case DIVIDE:
-                tokens[tokenCursor].type = DIVIDE;
-                tokens[tokenCursor].value = 0;
-                tokenCursor++;
+                tokens[tokenCursor++] = (struct Token) { DIVIDE, 0 };
                 break;
             case EQUALS:
-                tokens[tokenCursor].type = EQUALS;
-                tokens[tokenCursor].value = 0;
-                tokenCursor++;
+                tokens[tokenCursor++] = (struct Token) { EQUALS, 0 };
                 break;
             default:
                 if(isDigit(equation[i])) {
-                    tokens[tokenCursor].type = NUMBER;
-                    int value = charToInt(equation[i]);
+                    int value = 0;
 
-                    while(i < len - 1 && isDigit(equation[i + 1])) {
-                        value *= 10;
-                        value += charToInt(equation[i + 1]);
-                        i++;
-                    }
+                    while(i < len - 1 && isDigit(equation[i]))
+                        value = value * 10 + charToInt(equation[i++]);
 
                     if (i < len - 1 && equation[i + 1] == X) {
                         tokens[tokenCursor].type = X;
                         i++;
+                    } else if(tokenCursor > 0 && tokens[tokenCursor - 1].type == X) {
+                        tokenCursor--;
+                    } else {
+                        tokens[tokenCursor].type = NUMBER;
                     }
 
-                    tokens[tokenCursor].value = value;
-                    tokenCursor++;
+                    tokens[tokenCursor++].value = value;
                 } else {
                     free(tokens);
                     fprintf(stderr, "%s %c %s\n", "Character", equation[i], "not valid");
@@ -117,5 +80,6 @@ struct Token* tokenize(const char *equation) {
 
     tokens[tokenCursor].type = END;
     tokens[tokenCursor].value = 0;
+    tokens = realloc(tokens, tokenCursor * sizeof(struct Token));
     return tokens;
 }
