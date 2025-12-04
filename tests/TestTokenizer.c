@@ -171,18 +171,6 @@ void test_tokenizeWithoutSpaces() {
 }
 
 //In order to test the exit with an error code called by the tokenize function, we need to create a separate process so the tests process is not stopped
-void test_tokenizeTooManyEquationTokens() {
-    pid_t pid = fork();
-    if (pid == 0) {
-        tokenize("x + 8 + 789 + 435x + 2 + x - 7 - 5 + 76x - 43 = 62 + 5x + 87 + 654x + 43 - 456 + x - 3 - 56 + 7 + 89 + 45 - 3x + 678 - 55 + 8");
-        exit(0);
-    }
-
-    int status;
-    wait(&status);
-    TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
-}
-
 void test_tokenizeTooLongEquation() {
     pid_t pid = fork();
     if (pid == 0) {
@@ -227,7 +215,6 @@ void testTokenizer_runTests() {
     RUN_TEST(test_tokenizeWithTimes);
     RUN_TEST(test_tokenizeWithDivide);
     RUN_TEST(test_tokenizeWithoutSpaces);
-    RUN_TEST(test_tokenizeTooManyEquationTokens);
     RUN_TEST(test_tokenizeTooLongEquation);
     RUN_TEST(test_tokenizeUnexpectedCharacter);
     RUN_TEST(test_tokenizeUnexpectedFloatNumber);

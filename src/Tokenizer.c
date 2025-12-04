@@ -36,7 +36,8 @@ struct Token* tokenize(const char *equation) {
             case EMPTY:
                 break;
             case X:
-                tokens[tokenCursor++] = (struct Token) { X, 1 };
+                tokens[tokenCursor] = (struct Token) { X, 1 };
+                if (i < len - 1 && !isDigit(equation[i + 1])) tokenCursor++;
                 break;
             case PLUS:
                 tokens[tokenCursor++] = (struct Token) { PLUS, 0 };
@@ -55,17 +56,15 @@ struct Token* tokenize(const char *equation) {
                 break;
             default:
                 if(isDigit(equation[i])) {
-                    int value = 0;
+                    int value = charToInt(equation[i]);
 
-                    while(i < len - 1 && isDigit(equation[i]))
-                        value = value * 10 + charToInt(equation[i++]);
+                    while(i < len - 1 && isDigit(equation[i + 1]))
+                        value = value * 10 + charToInt(equation[++i]);
 
                     if (i < len - 1 && equation[i + 1] == X) {
                         tokens[tokenCursor].type = X;
                         i++;
-                    } else if(tokenCursor > 0 && tokens[tokenCursor - 1].type == X) {
-                        tokenCursor--;
-                    } else {
+                    } else if (tokens[tokenCursor].type != X) {
                         tokens[tokenCursor].type = NUMBER;
                     }
 
@@ -78,8 +77,8 @@ struct Token* tokenize(const char *equation) {
         }
     }
 
-    tokens[tokenCursor].type = END;
-    tokens[tokenCursor].value = 0;
-    tokens = realloc(tokens, tokenCursor * sizeof(struct Token));
+    tokens[tokenCursor] = (struct Token) { END, 0 };
+    struct Token *reallocatedTokens = realloc(tokens, (tokenCursor + 1) * sizeof(struct Token));
+    if (reallocatedTokens != NULL) tokens = reallocatedTokens;
     return tokens;
 }
