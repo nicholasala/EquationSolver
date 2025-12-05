@@ -4,8 +4,8 @@
 
 #ifndef EQUATION_SOLVER_MULTIPLICATIONSIMPLIFIER_H
 #define EQUATION_SOLVER_MULTIPLICATIONSIMPLIFIER_H
-#include "../model/Token.h"
+#include "../model/Equation.h"
 
-struct Token* multiplicationSimplify(struct Token *tokens);
+struct Equation* multiplicationSimplify(struct Equation *equation);
 
 #endif //EQUATION_SOLVER_MULTIPLICATIONSIMPLIFIER_H

@@ -11,7 +11,9 @@
 #include "../src/model/TokenType.h"
 
 void test_tokenize() {
-    struct Token *tokens = tokenize("x + 43 - 652 = 10 + 982x - 8x");
+    struct Equation *equation = tokenize("x + 43 - 652 = 10 + 982x - 8x");
+    struct Token *tokens = equation->tokens;
+    TEST_ASSERT_EQUAL(11, equation->len);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -46,7 +48,7 @@ void test_tokenize() {
 }
 
 void test_tokenizeWithdifferentVariableOrder() {
-    struct Token *tokens = tokenize("x + x8= 62");
+    struct Token *tokens = tokenize("x + x8= 62")->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -66,7 +68,7 @@ void test_tokenizeWithdifferentVariableOrder() {
 }
 
 void test_tokenizeWithTimes() {
-    struct Token *tokens = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5");
+    struct Token *tokens = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5")->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -104,7 +106,7 @@ void test_tokenizeWithTimes() {
 }
 
 void test_tokenizeWithDivide() {
-    struct Token *tokens = tokenize("10x / 2 = 4 / 1 - 5 / 5");
+    struct Token *tokens = tokenize("10x / 2 = 4 / 1 - 5 / 5")->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(10, tokens->value);
     tokens++;
@@ -137,7 +139,7 @@ void test_tokenizeWithDivide() {
 }
 
 void test_tokenizeWithoutSpaces() {
-    struct Token *tokens = tokenize("6x+8*-=4+3x/3");
+    struct Token *tokens = tokenize("6x+8*-=4+3x/3")->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(6, tokens->value);
     tokens++;

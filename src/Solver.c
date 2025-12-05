@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "Tokenizer.h"
 #include "GrammarChecker.h"
+#include "model/Equation.h"
 #include "model/Token.h"
 #include "model/GrammarCheckResult.h"
 
@@ -43,8 +44,8 @@ float calculateValueOnRight(struct Token *tokens, enum TokenType type) {
 }
 
 float solve(char *text) {
-    struct Token *tokens = tokenize(text);
-    struct GrammarCheckResult grammarCheckResult = checkGrammar(tokens);
+    struct Equation *equation = tokenize(text);
+    struct GrammarCheckResult grammarCheckResult = checkGrammar(equation);
 
     if (!grammarCheckResult.ok) {
         fprintf(stderr, "%s\n", grammarCheckResult.error);
@@ -52,9 +53,10 @@ float solve(char *text) {
     }
 
     float result = 0;
-    float xValue = calculateValue(tokens, X);
-    if (xValue != 0) result = calculateValueOnRight(tokens, NUMBER) / xValue;
+    float xValue = calculateValue(equation->tokens, X);
+    if (xValue != 0) result = calculateValueOnRight(equation->tokens, NUMBER) / xValue;
 
-    free(tokens);
+    free(equation->tokens);
+    free(equation);
     return result;
 }

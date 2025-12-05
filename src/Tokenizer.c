@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "model/TokenType.h"
+#include "model/Equation.h"
 #include "model/Token.h"
 
 //The maximum number of tokens accepted in the equation, which is one token per character considering an equation written without empty spaces in between tokens
@@ -20,7 +21,7 @@ int charToInt(char c) {
     return c - '0';
 }
 
-struct Token* tokenize(const char *equation) {
+struct Equation* tokenize(const char *equation) {
     const size_t len = strlen(equation);
 
     if (len > MAX_TOKENS) {
@@ -38,6 +39,7 @@ struct Token* tokenize(const char *equation) {
             case X:
                 tokens[tokenCursor] = (struct Token) { X, 1 };
                 if (i < len - 1 && !isDigit(equation[i + 1])) tokenCursor++;
+                if (i == len -1) tokenCursor++;
                 break;
             case PLUS:
                 tokens[tokenCursor++] = (struct Token) { PLUS, 0 };
@@ -80,5 +82,8 @@ struct Token* tokenize(const char *equation) {
     tokens[tokenCursor] = (struct Token) { END, 0 };
     struct Token *reallocatedTokens = realloc(tokens, (tokenCursor + 1) * sizeof(struct Token));
     if (reallocatedTokens != NULL) tokens = reallocatedTokens;
-    return tokens;
+    struct Equation *res = malloc(sizeof(struct Equation));
+    res->tokens = tokens;
+    res->len = tokenCursor;
+    return res;
 }

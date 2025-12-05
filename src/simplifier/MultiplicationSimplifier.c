@@ -4,6 +4,6 @@
 
 #include "MultiplicationSimplifier.h"
 
-struct Token* multiplicationSimplify(struct Token *tokens) {
-    return tokens;
+struct Equation* multiplicationSimplify(struct Equation *equation) {
+    return equation;
 }

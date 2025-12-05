@@ -5,6 +5,7 @@
 #include "./model/GrammarCheckResult.h"
 #include "./model/Token.h"
 #include "./model/TokenType.h"
+#include "model/Equation.h"
 
 //Check that the variable x exists in the equation
 bool xExists(struct Token *tokens) {
@@ -73,32 +74,55 @@ bool beginsWithDivide(struct Token *tokens) {
     return tokens->type == DIVIDE;
 }
 
-//TODO refactor: having a struct with tokens and a len field could help here in knowing how to increment the cursor in order to reach the last token
-bool endsWithOperator(struct Token *tokens) {
-    // struct Token *cursor = tokens;
-    // while (cursor->type != END) cursor++;
-    // return isOperator((cursor - 1)->type);
-    return false;
+bool endsWithOperator(struct Equation *equation) {
+    return isOperator(equation->tokens[equation->len - 1].type);
 }
 
-struct GrammarCheckResult checkGrammar(struct Token *tokens) {
-    if (!xExists(tokens))
+bool hasOperatorBeforeEquals(struct Token *tokens) {
+    struct Token *cursor = tokens;
+    while (cursor->type != EQUALS) cursor++;
+    return cursor != tokens && isOperator((cursor - 1)->type);
+}
+
+bool hasTimesAfterEquals(struct Token *tokens) {
+    struct Token *cursor = tokens;
+    while (cursor->type != EQUALS) cursor++;
+    return (cursor + 1)->type == TIMES;
+}
+
+bool hasDivideAfterEquals(struct Token *tokens) {
+    struct Token *cursor = tokens;
+    while (cursor->type != EQUALS) cursor++;
+    return (cursor + 1)->type == DIVIDE;
+}
+
+struct GrammarCheckResult checkGrammar(struct Equation *equation) {
+    if (!xExists(equation->tokens))
         return (struct GrammarCheckResult) { false, "No x found" };
 
-    if (!hasOneEqual(tokens))
+    if (!hasOneEqual(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation must have one equal" };
 
-    if (!hasCorrectOrder(tokens))
+    if (!hasCorrectOrder(equation->tokens))
         return (struct GrammarCheckResult) { false, "Wrong order in between variables/numbers and operators" };
 
-    if (beginsWithTimes(tokens))
+    if (beginsWithTimes(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation can't begin with times" };
 
-    if (beginsWithDivide(tokens))
+    if (beginsWithDivide(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation can't begin with divide" };
 
-    if (endsWithOperator(tokens))
+    if (endsWithOperator(equation))
         return (struct GrammarCheckResult) { false, "Equation can't end with operator" };
+
+    if (hasOperatorBeforeEquals(equation->tokens))
+        return (struct GrammarCheckResult) { false, "Equation can't have an operator before equals" };
+
+    if (hasTimesAfterEquals(equation->tokens))
+        return (struct GrammarCheckResult) { false, "Equation can't have times after equals" };
+
+    if (hasDivideAfterEquals(equation->tokens))
+        return (struct GrammarCheckResult) { false, "Equation can't have divide after equals" };
 
     return (struct GrammarCheckResult) { true, "" };
 }
