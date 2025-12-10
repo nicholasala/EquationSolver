@@ -9,6 +9,7 @@
 #include "model/Equation.h"
 #include "model/Token.h"
 #include "model/GrammarCheckResult.h"
+#include "simplifier/MultiplicationSimplifier.h"
 
 /**
     * Calculate the value of a given type in the equation
@@ -50,6 +51,13 @@ float solve(char *text) {
     if (!grammarCheckResult.ok) {
         fprintf(stderr, "%s\n", grammarCheckResult.error);
         exit(1);
+    }
+
+    if (equation->hasMultiplication) {
+        struct Equation *oldEquation = equation;
+        equation = multiplicationSimplify(equation);
+        free(oldEquation->tokens);
+        free(oldEquation);
     }
 
     float result = 0;

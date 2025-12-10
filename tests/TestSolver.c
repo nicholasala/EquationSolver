@@ -44,6 +44,16 @@ void test_solve7() {
     TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0, result);
 }
 
+void test_solve8() {
+    float result = solve("x + 16 * 3x = 42x * 3 + 8 * 2");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, -0.2077922, result);
+}
+
+void test_solve9() {
+    float result = solve("x + 16 / 4 = 42x / 2 + 8 / 2");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0, result);
+}
+
 void test_solveGrammarError() {
     pid_t pid = fork();
     if (pid == 0) {
@@ -64,5 +74,7 @@ void testSolver_runTests() {
     RUN_TEST(test_solve5);
     RUN_TEST(test_solve6);
     RUN_TEST(test_solve7);
+    RUN_TEST(test_solve8);
+    RUN_TEST(test_solve9);
     RUN_TEST(test_solveGrammarError);
 }

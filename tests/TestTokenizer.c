@@ -14,6 +14,8 @@ void test_tokenize() {
     struct Equation *equation = tokenize("x + 43 - 652 = 10 + 982x - 8x");
     struct Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(11, equation->len);
+    TEST_ASSERT_FALSE(equation->hasMultiplication);
+    TEST_ASSERT_FALSE(equation->hasDivision);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -68,7 +70,11 @@ void test_tokenizeWithdifferentVariableOrder() {
 }
 
 void test_tokenizeWithTimes() {
-    struct Token *tokens = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5")->tokens;
+    struct Equation *equation = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5");
+    struct Token *tokens = equation->tokens;
+    TEST_ASSERT_EQUAL(13, equation->len);
+    TEST_ASSERT_TRUE(equation->hasMultiplication);
+    TEST_ASSERT_FALSE(equation->hasDivision);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -106,7 +112,11 @@ void test_tokenizeWithTimes() {
 }
 
 void test_tokenizeWithDivide() {
-    struct Token *tokens = tokenize("10x / 2 = 4 / 1 - 5 / 5")->tokens;
+    struct Equation *equation = tokenize("10x / 2 = 4 / 1 - 5 / 5");
+    struct Token *tokens = equation->tokens;
+    TEST_ASSERT_EQUAL(11, equation->len);
+    TEST_ASSERT_FALSE(equation->hasMultiplication);
+    TEST_ASSERT_TRUE(equation->hasDivision);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(10, tokens->value);
     tokens++;

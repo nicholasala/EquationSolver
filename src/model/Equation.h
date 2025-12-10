@@ -8,6 +8,8 @@
 struct Equation {
     struct Token *tokens;
     int len;
+    bool hasMultiplication;
+    bool hasDivision;
 };
 
 #endif //EQUATION_SOLVER_EQUATION_H

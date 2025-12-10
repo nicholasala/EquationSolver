@@ -106,10 +106,10 @@ struct GrammarCheckResult checkGrammar(struct Equation *equation) {
     if (!hasCorrectOrder(equation->tokens))
         return (struct GrammarCheckResult) { false, "Wrong order in between variables/numbers and operators" };
 
-    if (beginsWithTimes(equation->tokens))
+    if (equation->hasMultiplication && beginsWithTimes(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation can't begin with times" };
 
-    if (beginsWithDivide(equation->tokens))
+    if (equation->hasDivision && beginsWithDivide(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation can't begin with divide" };
 
     if (endsWithOperator(equation))
@@ -118,10 +118,10 @@ struct GrammarCheckResult checkGrammar(struct Equation *equation) {
     if (hasOperatorBeforeEquals(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation can't have an operator before equals" };
 
-    if (hasTimesAfterEquals(equation->tokens))
+    if (equation->hasMultiplication && hasTimesAfterEquals(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation can't have times after equals" };
 
-    if (hasDivideAfterEquals(equation->tokens))
+    if (equation->hasDivision && hasDivideAfterEquals(equation->tokens))
         return (struct GrammarCheckResult) { false, "Equation can't have divide after equals" };
 
     return (struct GrammarCheckResult) { true, "" };
