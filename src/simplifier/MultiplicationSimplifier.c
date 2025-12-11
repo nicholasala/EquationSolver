@@ -43,6 +43,7 @@ void multiplicationSimplify(struct Equation *equation) {
 
     equation->tokens[tokenCursor] = (struct Token) { END, 0 };
     equation->len = tokenCursor;
+    equation->hasMultiplication = false;
     struct Token *reallocatedTokens = realloc(equation->tokens, (tokenCursor + 1) * sizeof(struct Token));
     if (reallocatedTokens != NULL) equation->tokens = reallocatedTokens;
 }

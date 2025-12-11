@@ -13,6 +13,8 @@ void test_multiplicationSimplify() {
     struct Equation *equation = tokenize("x * 4 - 8 = 10 * 16x - 14 + 5 * 5");
     struct Token *tokens = equation->tokens;
     multiplicationSimplify(equation);
+    TEST_ASSERT_EQUAL(9, equation->len);
+    TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(4, tokens->value);
     tokens++;
@@ -46,6 +48,8 @@ void test_multiplicationSimplify2() {
     struct Equation *equation = tokenize("x + x = 10 * 10");
     struct Token *tokens = equation->tokens;
     multiplicationSimplify(equation);
+    TEST_ASSERT_EQUAL(5, equation->len);
+    TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -58,7 +62,9 @@ void test_multiplicationSimplify2() {
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
     TEST_ASSERT_EQUAL(100, tokens->value);
-    tokens -= 4;
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 5;
     free(tokens);
     free(equation);
 }
