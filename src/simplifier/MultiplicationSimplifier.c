@@ -8,45 +8,41 @@
 #include "../model/Token.h"
 #include "../model/TokenType.h"
 
-int countMultiplications(struct Token *tokens) {
-    struct Token *cursor = tokens;
-    int multiplications = 0;
-
-    while (cursor->type != END) {
-        if (cursor->type == TIMES) multiplications++;
-        cursor++;
-    }
-
-    return multiplications;
-}
-
-struct Token solveMultiplication(struct Token firstFactor, struct Token secondFactor) {
+struct Token solveMultiplication(struct Token *firstFactor, struct Token *secondFactor) {
     struct Token result;
 
-    if (firstFactor.type == X || secondFactor.type == X)
+    if (firstFactor->type == X || secondFactor->type == X)
         result.type = X;
     else
         result.type = NUMBER;
 
-    result.value = firstFactor.value * secondFactor.value;
+    result.value = firstFactor->value * secondFactor->value;
 
     return result;
 }
 
-struct Equation* multiplicationSimplify(struct Equation *equation) {
-    struct Equation *result = malloc(sizeof(struct Equation));
-    result->tokens = malloc((equation->len - (2 * countMultiplications(equation->tokens))) * sizeof(struct Token));
+/**
+    * Solve all the multiplications in the input equation in-place.
+    * The input equation has first to be checked with the checkGrammar function in the GrammarChecker module.
+    * @param {Equation} *equation - pointer to the equation to simplify
+    * @return {void}
+    */
+void multiplicationSimplify(struct Equation *equation) {
+    struct Token *cursor = equation->tokens;
     int tokenCursor = 0;
 
-    for (int i = 0; i < equation->len; i++) {
-        if (i != equation->len - 1 && equation->tokens[i + 1].type == TIMES) {
-            result->tokens[tokenCursor++] = solveMultiplication(equation->tokens[i], equation->tokens[i + 2]);
-            i += 2;
+    while (cursor->type != END) {
+        if ((cursor + 1)->type == TIMES) {
+            equation->tokens[tokenCursor++] = solveMultiplication(cursor, cursor + 2);
+            cursor += 3;
         } else {
-            result->tokens[tokenCursor++] = equation->tokens[i];
+            equation->tokens[tokenCursor++] = *cursor;
+            cursor++;
         }
     }
 
-    result->tokens[tokenCursor] = (struct Token) { END, 0 };
-    return result;
+    equation->tokens[tokenCursor] = (struct Token) { END, 0 };
+    equation->len = tokenCursor;
+    struct Token *reallocatedTokens = realloc(equation->tokens, (tokenCursor + 1) * sizeof(struct Token));
+    if (reallocatedTokens != NULL) equation->tokens = reallocatedTokens;
 }

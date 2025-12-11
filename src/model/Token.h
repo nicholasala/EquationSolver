@@ -6,6 +6,7 @@
 #define EQUATION_SOLVER_TOKEN_H
 #include "TokenType.h"
 
+//TODO change into float and accept float numbers in the tokenizer
 struct Token {
     enum TokenType type;
     int value;

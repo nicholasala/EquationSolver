@@ -15,6 +15,7 @@
     * Calculate the value of a given type in the equation
     * @param {Token} *tokens - the tokens of the equation
     * @param {TokenType} type - the token type of the wanted value (X, NUMBER, ...)
+    * @return {float} calculated value
     */
 float calculateValue(struct Token *tokens, enum TokenType type) {
     float value = 0;
@@ -54,10 +55,7 @@ float solve(char *text) {
     }
 
     if (equation->hasMultiplication) {
-        struct Equation *oldEquation = equation;
-        equation = multiplicationSimplify(equation);
-        free(oldEquation->tokens);
-        free(oldEquation);
+        multiplicationSimplify(equation);
     }
 
     float result = 0;

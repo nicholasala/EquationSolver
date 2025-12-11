@@ -21,6 +21,11 @@ int charToInt(char c) {
     return c - '0';
 }
 
+/**
+    * Extract the tokens from the passed equation
+    * @param {char} *equation - string containing the equation to tokenize
+    * @return {Equation} *result - pointer to the created Equation struct
+    */
 struct Equation* tokenize(const char *equation) {
     const size_t len = strlen(equation);
 

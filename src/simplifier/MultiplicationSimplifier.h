@@ -6,6 +6,6 @@
 #define EQUATION_SOLVER_MULTIPLICATIONSIMPLIFIER_H
 #include "../model/Equation.h"
 
-struct Equation* multiplicationSimplify(struct Equation *equation);
+void multiplicationSimplify(struct Equation *equation);
 
 #endif //EQUATION_SOLVER_MULTIPLICATIONSIMPLIFIER_H
