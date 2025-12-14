@@ -66,12 +66,19 @@ struct Equation* tokenize(const char *equation) {
             case EQUALS:
                 result->tokens[tokenCursor++] = (struct Token) { EQUALS, 0 };
                 break;
+            case DOT:
+                //TODO case with integer value 0
+                break;
             default:
                 if(isDigit(equation[i])) {
                     int value = charToInt(equation[i]);
 
                     while(i < len - 1 && isDigit(equation[i + 1]))
                         value = value * 10 + charToInt(equation[++i]);
+
+                    if (i < len - 1 && equation[i + 1] == DOT) {
+                        //TODO add decimal part of the number
+                    }
 
                     if (i < len - 1 && equation[i + 1] == X) {
                         result->tokens[tokenCursor].type = X;

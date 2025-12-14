@@ -182,6 +182,59 @@ void test_tokenizeWithoutSpaces() {
     free(tokens);
 }
 
+void test_tokenizeWithFloatNumber() {
+    struct Equation *equation = tokenize("0.8x + 43.456 - 652.54 = 10.2 + 982.237x - 8.8x");
+    struct Token *tokens = equation->tokens;
+    TEST_ASSERT_EQUAL(11, equation->len);
+    TEST_ASSERT_FALSE(equation->hasMultiplication);
+    TEST_ASSERT_FALSE(equation->hasDivision);
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(0.8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(43.456, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(652.54, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(10.2, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(982.237, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(MINUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(8.8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 11;
+    free(tokens);
+}
+
+void test_tokenizeWithFloatNumber2() {
+    struct Equation *equation = tokenize(".=");
+    struct Token *tokens = equation->tokens;
+    TEST_ASSERT_EQUAL(2, equation->len);
+    TEST_ASSERT_FALSE(equation->hasMultiplication);
+    TEST_ASSERT_FALSE(equation->hasDivision);
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(0.0, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens -= 1;
+    free(tokens);
+}
+
 //In order to test the exit with an error code called by the tokenize function, we need to create a separate process so the tests process is not stopped
 void test_tokenizeTooLongEquation() {
     pid_t pid = fork();
@@ -227,6 +280,8 @@ void testTokenizer_runTests() {
     RUN_TEST(test_tokenizeWithTimes);
     RUN_TEST(test_tokenizeWithDivide);
     RUN_TEST(test_tokenizeWithoutSpaces);
+    RUN_TEST(test_tokenizeWithFloatNumber);
+    RUN_TEST(test_tokenizeWithFloatNumber2);
     RUN_TEST(test_tokenizeTooLongEquation);
     RUN_TEST(test_tokenizeUnexpectedCharacter);
     RUN_TEST(test_tokenizeUnexpectedFloatNumber);

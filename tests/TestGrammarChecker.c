@@ -118,6 +118,14 @@ void test_checkGrammarDivideAfterEquals() {
     TEST_ASSERT_EQUAL_CHAR_ARRAY("Equation can't have divide after equals", result.error, 39);
 }
 
+//Wrong floating number format
+void test_checkGrammarWrongFloatingNumberFormat() {
+    struct Equation *equation = tokenize("2x.7 = 3 ");
+    struct GrammarCheckResult result = checkGrammar(equation);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong floating number format, correct format: [number].[number]x", result.error, 64);
+}
+
 void testGrammarChecker_runTests() {
     RUN_TEST(test_checkGrammarOkEquation);
     RUN_TEST(test_checkGrammarNoXFound);
@@ -133,4 +141,5 @@ void testGrammarChecker_runTests() {
     RUN_TEST(test_checkGrammarOperatorBeforeEquals);
     RUN_TEST(test_checkGrammarTimesAfterEquals);
     RUN_TEST(test_checkGrammarDivideAfterEquals);
+    RUN_TEST(test_checkGrammarWrongFloatingNumberFormat);
 }

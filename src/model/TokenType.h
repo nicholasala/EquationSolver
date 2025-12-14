@@ -14,6 +14,7 @@ enum TokenType {
   DIVIDE = '/',
   EQUALS = '=',
   EMPTY = ' ',
+  DOT = '.',
   END = '\n'
 };
 
