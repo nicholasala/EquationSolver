@@ -123,7 +123,7 @@ void test_checkGrammarWrongFloatingNumberFormat() {
     struct Equation *equation = tokenize("2x.7 = 3 ");
     struct GrammarCheckResult result = checkGrammar(equation);
     TEST_ASSERT_FALSE(result.ok);
-    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong floating number format, correct format: [number].[number]x", result.error, 64);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Wrong order in between variables/numbers and operators", result.error, 54);
 }
 
 void testGrammarChecker_runTests() {

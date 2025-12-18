@@ -17,8 +17,8 @@ bool isDigit(char c) {
     return c >= '0' && c <= '9';
 }
 
-int charToInt(char c) {
-    return c - '0';
+float charToFloat(char c) {
+    return (float) (c - '0');
 }
 
 /**
@@ -67,17 +67,34 @@ struct Equation* tokenize(const char *equation) {
                 result->tokens[tokenCursor++] = (struct Token) { EQUALS, 0 };
                 break;
             case DOT:
-                //TODO case with integer value 0
+                float decimalValue = 0;
+                float decimalDivider = 10;
+
+                while (i < len - 1 && isDigit(equation[i + 1])) {
+                    decimalValue += charToFloat(equation[++i]) / decimalDivider;
+                    decimalDivider *= 10;
+                }
+
+                if (result->tokens[tokenCursor].type != NUMBER) result->tokens[tokenCursor] = (struct Token) { NUMBER, 0 };
+                result->tokens[tokenCursor].value += decimalValue;
+
+                if (i < len - 1 && equation[i + 1] == X) {
+                    result->tokens[tokenCursor].type = X;
+                    i++;
+                }
+
+                tokenCursor++;
                 break;
             default:
                 if(isDigit(equation[i])) {
-                    int value = charToInt(equation[i]);
+                    float value = charToFloat(equation[i]);
 
                     while(i < len - 1 && isDigit(equation[i + 1]))
-                        value = value * 10 + charToInt(equation[++i]);
+                        value = value * 10 + charToFloat(equation[++i]);
 
                     if (i < len - 1 && equation[i + 1] == DOT) {
-                        //TODO add decimal part of the number
+                        result->tokens[tokenCursor] = (struct Token) { NUMBER, value };
+                        break;
                     }
 
                     if (i < len - 1 && equation[i + 1] == X) {

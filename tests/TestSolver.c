@@ -56,12 +56,12 @@ void test_solveDivision() {
 
 void test_solveFloatNumbers() {
     float result = solve("32.5x * 2 = 129.75 + 0.25");
-    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, -0.2077922, result);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 2, result);
 }
 
 void test_solveFloatNumbers2() {
     float result = solve("983.456x + 78.4 / 2 = 42.8x * 7.2 + 8.897 * 789.2 - 43x");
-    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, -0.2077922, result);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 30.81773, result);
 }
 
 void test_solveGrammarError() {

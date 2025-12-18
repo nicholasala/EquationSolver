@@ -262,18 +262,6 @@ void test_tokenizeUnexpectedCharacter() {
     TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
 }
 
-void test_tokenizeUnexpectedFloatNumber() {
-    pid_t pid = fork();
-    if (pid == 0) {
-        tokenize("4.5x = 9");
-        exit(0);
-    }
-
-    int status;
-    wait(&status);
-    TEST_ASSERT_EQUAL(1, WEXITSTATUS(status));
-}
-
 void testTokenizer_runTests() {
     RUN_TEST(test_tokenize);
     RUN_TEST(test_tokenizeWithdifferentVariableOrder);
@@ -284,5 +272,4 @@ void testTokenizer_runTests() {
     RUN_TEST(test_tokenizeWithFloatNumber2);
     RUN_TEST(test_tokenizeTooLongEquation);
     RUN_TEST(test_tokenizeUnexpectedCharacter);
-    RUN_TEST(test_tokenizeUnexpectedFloatNumber);
 }
