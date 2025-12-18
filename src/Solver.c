@@ -10,6 +10,7 @@
 #include "model/Token.h"
 #include "model/GrammarCheckResult.h"
 #include "simplifier/MultiplicationSimplifier.h"
+#include "simplifier/DivisionSimplifier.h"
 
 /**
     * Calculate the value of a given type in the equation
@@ -52,6 +53,10 @@ float solve(char *text) {
     if (!grammarCheckResult.ok) {
         fprintf(stderr, "%s\n", grammarCheckResult.error);
         exit(1);
+    }
+
+    if (equation->hasDivision) {
+        divisionSimplify(equation);
     }
 
     if (equation->hasMultiplication) {
