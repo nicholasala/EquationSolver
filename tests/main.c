@@ -6,6 +6,7 @@
 #include "TestSolver.h"
 #include "TestGrammarChecker.h"
 #include "TestMultiplicationSimplifier.h"
+#include "TestDivisionSimplifier.h"
 
 void setUp() { }
 
@@ -17,6 +18,7 @@ int main() {
     testSolver_runTests();
     testGrammarChecker_runTests();
     testMultiplicationSimplifier_runTests();
+    testDivisionSimplifier_runTests();
     UNITY_END();
     return 0;
 }
