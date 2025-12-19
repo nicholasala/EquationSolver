@@ -9,6 +9,7 @@
 #include "../src/Tokenizer.h"
 #include "../src/model/Token.h"
 #include "../src/model/TokenType.h"
+#define FLOAT_DELTA 0.0001
 
 void test_tokenize() {
     struct Equation *equation = tokenize("x + 43 - 652 = 10 + 982x - 8x");
@@ -189,32 +190,32 @@ void test_tokenizeWithFloatNumber() {
     TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_FALSE(equation->hasDivision);
     TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(0.8, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.8, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(PLUS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(43.456, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 43.456, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(MINUS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(652.54, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 652.54, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(EQUALS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(10.2, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 10.2, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(PLUS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(982.237, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 982.237, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(MINUS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(8.8, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 8.8, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(END, tokens->type);
     tokens -= 11;
@@ -228,7 +229,7 @@ void test_tokenizeWithFloatNumber2() {
     TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_FALSE(equation->hasDivision);
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(0.0, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.0, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(EQUALS, tokens->type);
     tokens -= 1;

@@ -8,15 +8,21 @@
 #include "../src/simplifier/DivisionSimplifier.h"
 #include "../src/model/Equation.h"
 #include "../src/model/Token.h"
+#define FLOAT_DELTA 0.0001
 
 void test_divisionSimplify() {
     struct Equation *equation = tokenize("x / 4 - 8 = 10 / 16x - 14 + 25 / 5");
     struct Token *tokens = equation->tokens;
     divisionSimplify(equation);
-    TEST_ASSERT_EQUAL(9, equation->len);
+    TEST_ASSERT_EQUAL(15, equation->len);
     TEST_ASSERT_FALSE(equation->hasDivision);
     TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(0.25, tokens->value);
+    TEST_ASSERT_EQUAL(1, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.25, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(MINUS, tokens->type);
     tokens++;
@@ -25,8 +31,13 @@ void test_divisionSimplify() {
     tokens++;
     TEST_ASSERT_EQUAL(EQUALS, tokens->type);
     tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(10, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
     TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(0.625, tokens->value);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.0625, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(MINUS, tokens->type);
     tokens++;
@@ -36,10 +47,15 @@ void test_divisionSimplify() {
     TEST_ASSERT_EQUAL(PLUS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(5, tokens->value);
+    TEST_ASSERT_EQUAL(25, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.2, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(END, tokens->type);
-    tokens -= 9;
+    tokens -= 15;
     free(tokens);
     free(equation);
 }
@@ -48,7 +64,7 @@ void test_divisionSimplify2() {
     struct Equation *equation = tokenize("x + x = 10 / 10");
     struct Token *tokens = equation->tokens;
     divisionSimplify(equation);
-    TEST_ASSERT_EQUAL(5, equation->len);
+    TEST_ASSERT_EQUAL(7, equation->len);
     TEST_ASSERT_FALSE(equation->hasDivision);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
@@ -61,10 +77,15 @@ void test_divisionSimplify2() {
     TEST_ASSERT_EQUAL(EQUALS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(1, tokens->value);
+    TEST_ASSERT_EQUAL(10, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.1, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(END, tokens->type);
-    tokens -= 5;
+    tokens -= 7;
     free(tokens);
     free(equation);
 }
