@@ -9,6 +9,6 @@ int main(int argc, char *argv[]) {
     }
 
     float result = solve(argv[1]);
-    printf("Equation result: %f", result);
+    printf("Equation result: %f\n", result);
     return 0;
 }
