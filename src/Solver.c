@@ -18,11 +18,11 @@
     * @param {TokenType} type - the token type of the wanted value (X, NUMBER, ...)
     * @return {float} calculated value
     */
-float calculateValue(struct Token *tokens, enum TokenType type) {
+float calculateValue(Token *tokens, TokenType type) {
     float value = 0;
     short signMultiplier = 1;
     short equalMultiplier = 1;
-    struct Token *cursor = tokens;
+    Token *cursor = tokens;
 
     while (cursor->type != END) {
         if (cursor->type == MINUS && (cursor + 1)->type == type) {
@@ -31,7 +31,7 @@ float calculateValue(struct Token *tokens, enum TokenType type) {
         }
 
         if (cursor->type == type)
-            value += (float) (cursor->value * signMultiplier * equalMultiplier);
+            value += cursor->value * signMultiplier * equalMultiplier;
 
         if (cursor->type == EQUALS) equalMultiplier = -1;
         signMultiplier = 1;
@@ -42,13 +42,13 @@ float calculateValue(struct Token *tokens, enum TokenType type) {
 }
 
 //Calculate the value of a given type in the equation on the right of the equal
-float calculateValueOnRight(struct Token *tokens, enum TokenType type) {
+float calculateValueOnRight(Token *tokens, TokenType type) {
     return - calculateValue(tokens, type);
 }
 
-float solve(char *text) {
-    struct Equation *equation = tokenize(text);
-    struct GrammarCheckResult grammarCheckResult = checkGrammar(equation);
+float solve(const char *text) {
+    Equation *equation = tokenize(text);
+    GrammarCheckResult grammarCheckResult = checkGrammar(equation);
 
     if (!grammarCheckResult.ok) {
         fprintf(stderr, "%s\n", grammarCheckResult.error);

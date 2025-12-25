@@ -6,9 +6,9 @@
 #define EQUATION_SOLVER_TOKEN_H
 #include "TokenType.h"
 
-struct Token {
-    enum TokenType type;
+typedef struct {
+    TokenType type;
     float value;
-};
+} Token;
 
 #endif //EQUATION_SOLVER_TOKEN_H

@@ -11,11 +11,12 @@
 #define FLOAT_DELTA 0.0001
 
 void test_divisionSimplify() {
-    struct Equation *equation = tokenize("x / 4 - 8 = 10 / 16x - 14 + 25 / 5");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("x / 4 - 8 = 10 / 16x - 14 + 25 / 5");
+    Token *tokens = equation->tokens;
     divisionSimplify(equation);
     TEST_ASSERT_EQUAL(15, equation->len);
     TEST_ASSERT_FALSE(equation->hasDivision);
+    TEST_ASSERT_TRUE(equation->hasMultiplication);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -61,11 +62,12 @@ void test_divisionSimplify() {
 }
 
 void test_divisionSimplify2() {
-    struct Equation *equation = tokenize("x + x = 10 / 10");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("x + x = 10 / 10");
+    Token *tokens = equation->tokens;
     divisionSimplify(equation);
     TEST_ASSERT_EQUAL(7, equation->len);
     TEST_ASSERT_FALSE(equation->hasDivision);
+    TEST_ASSERT_TRUE(equation->hasMultiplication);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;

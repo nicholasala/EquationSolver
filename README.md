@@ -35,7 +35,7 @@ Some examples of equations accepted by the solver:
 ### Order of operations
 The operations are solved following this order:
 
-1. Divisions (Transformed into multiplications)
+1. Divisions (transformed into multiplications)
 2. Multiplications
 3. Additions and subtractions
 

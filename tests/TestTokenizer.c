@@ -12,8 +12,8 @@
 #define FLOAT_DELTA 0.0001
 
 void test_tokenize() {
-    struct Equation *equation = tokenize("x + 43 - 652 = 10 + 982x - 8x");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("x + 43 - 652 = 10 + 982x - 8x");
+    Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(11, equation->len);
     TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_FALSE(equation->hasDivision);
@@ -51,7 +51,7 @@ void test_tokenize() {
 }
 
 void test_tokenizeWithdifferentVariableOrder() {
-    struct Token *tokens = tokenize("x + x8= 62")->tokens;
+    Token *tokens = tokenize("x + x8= 62")->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -71,8 +71,8 @@ void test_tokenizeWithdifferentVariableOrder() {
 }
 
 void test_tokenizeWithTimes() {
-    struct Equation *equation = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("x * 4 - 8 = 10 * 16x - 5 * 5");
+    Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(13, equation->len);
     TEST_ASSERT_TRUE(equation->hasMultiplication);
     TEST_ASSERT_FALSE(equation->hasDivision);
@@ -113,8 +113,8 @@ void test_tokenizeWithTimes() {
 }
 
 void test_tokenizeWithDivide() {
-    struct Equation *equation = tokenize("10x / 2 = 4 / 1 - 5 / 5");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("10x / 2 = 4 / 1 - 5 / 5");
+    Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(11, equation->len);
     TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_TRUE(equation->hasDivision);
@@ -150,7 +150,7 @@ void test_tokenizeWithDivide() {
 }
 
 void test_tokenizeWithoutSpaces() {
-    struct Token *tokens = tokenize("6x+8*-=4+3x/3")->tokens;
+    Token *tokens = tokenize("6x+8*-=4+3x/3")->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(6, tokens->value);
     tokens++;
@@ -184,8 +184,8 @@ void test_tokenizeWithoutSpaces() {
 }
 
 void test_tokenizeWithFloatNumber() {
-    struct Equation *equation = tokenize("0.8x + 43.456 - 652.54 = 10.2 + 982.237x - 8.8x");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("0.8x + 43.456 - 652.54 = 10.2 + 982.237x - 8.8x");
+    Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(11, equation->len);
     TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_FALSE(equation->hasDivision);
@@ -223,8 +223,8 @@ void test_tokenizeWithFloatNumber() {
 }
 
 void test_tokenizeWithFloatNumber2() {
-    struct Equation *equation = tokenize(".=");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize(".=");
+    Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(2, equation->len);
     TEST_ASSERT_FALSE(equation->hasMultiplication);
     TEST_ASSERT_FALSE(equation->hasDivision);

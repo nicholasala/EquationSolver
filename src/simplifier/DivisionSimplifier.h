@@ -6,6 +6,6 @@
 #define EQUATION_SOLVER_DIVISIONSIMPLIFIER_H
 #include "../model/Equation.h"
 
-void divisionSimplify(struct Equation *equation);
+void divisionSimplify(Equation *equation);
 
 #endif //EQUATION_SOLVER_DIVISIONSIMPLIFIER_H

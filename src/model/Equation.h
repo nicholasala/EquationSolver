@@ -4,6 +4,7 @@
 
 #ifndef EQUATION_SOLVER_EQUATION_H
 #define EQUATION_SOLVER_EQUATION_H
+#include "Token.h"
 
 /**
     * Equation struct
@@ -12,11 +13,11 @@
     * @property {bool} hasMultiplication - equation has contains or not a multiplication
     * @property {bool} hasDivision - equation contains or not a division
     */
-struct Equation {
-    struct Token *tokens;
+typedef struct {
+    Token *tokens;
     int len;
     bool hasMultiplication;
     bool hasDivision;
-};
+} Equation;
 
 #endif //EQUATION_SOLVER_EQUATION_H

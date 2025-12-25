@@ -12,8 +12,8 @@
     * @param {Equation} *equation - pointer to the equation to simplify
     * @return {void}
     */
-void divisionSimplify(struct Equation *equation) {
-    struct Token *cursor = equation->tokens;
+void divisionSimplify(Equation *equation) {
+    Token *cursor = equation->tokens;
     equation->hasDivision = false;
 
     while (cursor->type != END) {

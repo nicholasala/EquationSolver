@@ -8,8 +8,8 @@
 #include "../model/Token.h"
 #include "../model/TokenType.h"
 
-struct Token solveMultiplication(struct Token *firstFactor, struct Token *secondFactor) {
-    struct Token result;
+Token solveMultiplication(Token *firstFactor, Token *secondFactor) {
+    Token result;
 
     if (firstFactor->type == X || secondFactor->type == X)
         result.type = X;
@@ -27,8 +27,8 @@ struct Token solveMultiplication(struct Token *firstFactor, struct Token *second
     * @param {Equation} *equation - pointer to the equation to simplify
     * @return {void}
     */
-void multiplicationSimplify(struct Equation *equation) {
-    struct Token *cursor = equation->tokens;
+void multiplicationSimplify(Equation *equation) {
+    Token *cursor = equation->tokens;
     int tokenCursor = 0;
 
     while (cursor->type != END) {
@@ -41,9 +41,9 @@ void multiplicationSimplify(struct Equation *equation) {
         }
     }
 
-    equation->tokens[tokenCursor] = (struct Token) { END, 0 };
+    equation->tokens[tokenCursor] = (Token) { END, 0 };
     equation->len = tokenCursor;
     equation->hasMultiplication = false;
-    struct Token *reallocatedTokens = realloc(equation->tokens, (tokenCursor + 1) * sizeof(struct Token));
+    Token *reallocatedTokens = realloc(equation->tokens, (tokenCursor + 1) * sizeof(Token));
     if (reallocatedTokens != NULL) equation->tokens = reallocatedTokens;
 }

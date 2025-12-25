@@ -8,8 +8,8 @@
 #include "model/Equation.h"
 
 //Check that the variable x exists in the equation
-bool xExists(struct Token *tokens) {
-    struct Token *cursor = tokens;
+bool xExists(Token *tokens) {
+    Token *cursor = tokens;
 
     while (cursor->type != END) {
         if (cursor->type == X) return true;
@@ -20,8 +20,8 @@ bool xExists(struct Token *tokens) {
 }
 
 //Check that the equation has one and only one equal
-bool hasOneEqual(struct Token *tokens) {
-    struct Token *cursor = tokens;
+bool hasOneEqual(Token *tokens) {
+    Token *cursor = tokens;
     bool hasEquals = false;
 
     while (cursor->type != END) {
@@ -35,15 +35,15 @@ bool hasOneEqual(struct Token *tokens) {
     return hasEquals;
 }
 
-bool isVariableOrNumber(enum TokenType type) {
+bool isVariableOrNumber(TokenType type) {
     return type == X || type == NUMBER;
 }
 
-bool isOperator(enum TokenType type) {
+bool isOperator(TokenType type) {
     return type == PLUS || type == MINUS || type == TIMES || type == DIVIDE;
 }
 
-bool isEquals(enum TokenType type) {
+bool isEquals(TokenType type) {
     return type == EQUALS;
 }
 
@@ -51,8 +51,8 @@ bool isEquals(enum TokenType type) {
 // Not valid examples:
 //  1. + * 9 = 10
 //  2. 4x 7 = 2
-bool hasCorrectOrder(struct Token *tokens) {
-    struct Token *cursor = tokens;
+bool hasCorrectOrder(Token *tokens) {
+    Token *cursor = tokens;
 
     while (cursor->type != END) {
         if (!isEquals(cursor->type) && !isEquals((cursor + 1)->type)) {
@@ -66,63 +66,63 @@ bool hasCorrectOrder(struct Token *tokens) {
     return true;
 }
 
-bool beginsWithTimes(struct Token *tokens) {
+bool beginsWithTimes(Token *tokens) {
     return tokens->type == TIMES;
 }
 
-bool beginsWithDivide(struct Token *tokens) {
+bool beginsWithDivide(Token *tokens) {
     return tokens->type == DIVIDE;
 }
 
-bool endsWithOperator(struct Equation *equation) {
+bool endsWithOperator(Equation *equation) {
     return isOperator(equation->tokens[equation->len - 1].type);
 }
 
-bool hasOperatorBeforeEquals(struct Token *tokens) {
-    struct Token *cursor = tokens;
+bool hasOperatorBeforeEquals(Token *tokens) {
+    Token *cursor = tokens;
     while (cursor->type != EQUALS) cursor++;
     return cursor != tokens && isOperator((cursor - 1)->type);
 }
 
-bool hasTimesAfterEquals(struct Token *tokens) {
-    struct Token *cursor = tokens;
+bool hasTimesAfterEquals(Token *tokens) {
+    Token *cursor = tokens;
     while (cursor->type != EQUALS) cursor++;
     return (cursor + 1)->type == TIMES;
 }
 
-bool hasDivideAfterEquals(struct Token *tokens) {
-    struct Token *cursor = tokens;
+bool hasDivideAfterEquals(Token *tokens) {
+    Token *cursor = tokens;
     while (cursor->type != EQUALS) cursor++;
     return (cursor + 1)->type == DIVIDE;
 }
 
-struct GrammarCheckResult checkGrammar(struct Equation *equation) {
+GrammarCheckResult checkGrammar(Equation *equation) {
     if (!xExists(equation->tokens))
-        return (struct GrammarCheckResult) { false, "No x found" };
+        return (GrammarCheckResult) { false, "No x found" };
 
     if (!hasOneEqual(equation->tokens))
-        return (struct GrammarCheckResult) { false, "Equation must have one equal" };
+        return (GrammarCheckResult) { false, "Equation must have one equal" };
 
     if (!hasCorrectOrder(equation->tokens))
-        return (struct GrammarCheckResult) { false, "Wrong order in between variables/numbers and operators" };
+        return (GrammarCheckResult) { false, "Wrong order in between variables/numbers and operators" };
 
     if (equation->hasMultiplication && beginsWithTimes(equation->tokens))
-        return (struct GrammarCheckResult) { false, "Equation can't begin with times" };
+        return (GrammarCheckResult) { false, "Equation can't begin with times" };
 
     if (equation->hasDivision && beginsWithDivide(equation->tokens))
-        return (struct GrammarCheckResult) { false, "Equation can't begin with divide" };
+        return (GrammarCheckResult) { false, "Equation can't begin with divide" };
 
     if (endsWithOperator(equation))
-        return (struct GrammarCheckResult) { false, "Equation can't end with operator" };
+        return (GrammarCheckResult) { false, "Equation can't end with operator" };
 
     if (hasOperatorBeforeEquals(equation->tokens))
-        return (struct GrammarCheckResult) { false, "Equation can't have an operator before equals" };
+        return (GrammarCheckResult) { false, "Equation can't have an operator before equals" };
 
     if (equation->hasMultiplication && hasTimesAfterEquals(equation->tokens))
-        return (struct GrammarCheckResult) { false, "Equation can't have times after equals" };
+        return (GrammarCheckResult) { false, "Equation can't have times after equals" };
 
     if (equation->hasDivision && hasDivideAfterEquals(equation->tokens))
-        return (struct GrammarCheckResult) { false, "Equation can't have divide after equals" };
+        return (GrammarCheckResult) { false, "Equation can't have divide after equals" };
 
-    return (struct GrammarCheckResult) { true, "" };
+    return (GrammarCheckResult) { true, "" };
 }

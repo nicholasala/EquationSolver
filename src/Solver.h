@@ -5,6 +5,6 @@
 #ifndef EQUATION_SOLVER_SOLVER_H
 #define EQUATION_SOLVER_SOLVER_H
 
-float solve(char* text);
+float solve(const char* text);
 
 #endif //EQUATION_SOLVER_SOLVER_H

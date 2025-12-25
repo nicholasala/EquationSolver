@@ -5,7 +5,7 @@
 #ifndef EQUATION_SOLVER_TOKENTYPE_H
 #define EQUATION_SOLVER_TOKENTYPE_H
 
-enum TokenType {
+typedef enum {
   X = 'x',
   NUMBER = '0',
   PLUS = '+',
@@ -16,6 +16,6 @@ enum TokenType {
   EMPTY = ' ',
   DOT = '.',
   END = '\n'
-};
+} TokenType;
 
 #endif //EQUATION_SOLVER_TOKENTYPE_H

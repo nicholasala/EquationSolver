@@ -5,7 +5,8 @@
 #ifndef EQUATION_SOLVER_GRAMMARCHECKER_H
 #define EQUATION_SOLVER_GRAMMARCHECKER_H
 #include "model/Equation.h"
+#include "model/GrammarCheckResult.h"
 
-struct GrammarCheckResult checkGrammar(struct Equation *tokens);
+GrammarCheckResult checkGrammar(Equation *tokens);
 
 #endif //EQUATION_SOLVER_GRAMMARCHECKER_H

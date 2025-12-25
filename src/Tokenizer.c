@@ -26,7 +26,7 @@ float charToFloat(char c) {
     * @param {char} *equation - string containing the equation to tokenize
     * @return {Equation} *result - pointer to the created Equation struct
     */
-struct Equation* tokenize(const char *equation) {
+Equation* tokenize(const char *equation) {
     const size_t len = strlen(equation);
 
     if (len > MAX_TOKENS) {
@@ -34,8 +34,8 @@ struct Equation* tokenize(const char *equation) {
         exit(1);
     }
 
-    struct Equation *result = malloc(sizeof(struct Equation));
-    result->tokens = malloc((MAX_TOKENS + 1) * sizeof(struct Token));
+    Equation *result = malloc(sizeof(Equation));
+    result->tokens = malloc((MAX_TOKENS + 1) * sizeof(Token));
     result->hasMultiplication = false;
     result->hasDivision = false;
     int tokenCursor = 0;
@@ -45,26 +45,26 @@ struct Equation* tokenize(const char *equation) {
             case EMPTY:
                 break;
             case X:
-                result->tokens[tokenCursor] = (struct Token) { X, 1 };
+                result->tokens[tokenCursor] = (Token) { X, 1 };
                 if (i < len - 1 && !isDigit(equation[i + 1])) tokenCursor++;
                 if (i == len -1) tokenCursor++;
                 break;
             case PLUS:
-                result->tokens[tokenCursor++] = (struct Token) { PLUS, 0 };
+                result->tokens[tokenCursor++] = (Token) { PLUS, 0 };
                 break;
             case MINUS:
-                result->tokens[tokenCursor++] = (struct Token) { MINUS, 0 };
+                result->tokens[tokenCursor++] = (Token) { MINUS, 0 };
                 break;
             case TIMES:
-                result->tokens[tokenCursor++] = (struct Token) { TIMES, 0 };
+                result->tokens[tokenCursor++] = (Token) { TIMES, 0 };
                 result->hasMultiplication = true;
                 break;
             case DIVIDE:
-                result->tokens[tokenCursor++] = (struct Token) { DIVIDE, 0 };
+                result->tokens[tokenCursor++] = (Token) { DIVIDE, 0 };
                 result->hasDivision = true;
                 break;
             case EQUALS:
-                result->tokens[tokenCursor++] = (struct Token) { EQUALS, 0 };
+                result->tokens[tokenCursor++] = (Token) { EQUALS, 0 };
                 break;
             case DOT:
                 float decimalValue = 0;
@@ -75,7 +75,7 @@ struct Equation* tokenize(const char *equation) {
                     decimalDivider *= 10;
                 }
 
-                if (result->tokens[tokenCursor].type != NUMBER) result->tokens[tokenCursor] = (struct Token) { NUMBER, 0 };
+                if (result->tokens[tokenCursor].type != NUMBER) result->tokens[tokenCursor] = (Token) { NUMBER, 0 };
                 result->tokens[tokenCursor].value += decimalValue;
 
                 if (i < len - 1 && equation[i + 1] == X) {
@@ -93,7 +93,7 @@ struct Equation* tokenize(const char *equation) {
                         value = value * 10 + charToFloat(equation[++i]);
 
                     if (i < len - 1 && equation[i + 1] == DOT) {
-                        result->tokens[tokenCursor] = (struct Token) { NUMBER, value };
+                        result->tokens[tokenCursor] = (Token) { NUMBER, value };
                         break;
                     }
 
@@ -113,9 +113,9 @@ struct Equation* tokenize(const char *equation) {
         }
     }
 
-    result->tokens[tokenCursor] = (struct Token) { END, 0 };
+    result->tokens[tokenCursor] = (Token) { END, 0 };
     result->len = tokenCursor;
-    struct Token *reallocatedTokens = realloc(result->tokens, (tokenCursor + 1) * sizeof(struct Token));
+    Token *reallocatedTokens = realloc(result->tokens, (tokenCursor + 1) * sizeof(Token));
     if (reallocatedTokens != NULL) result->tokens = reallocatedTokens;
     return result;
 }

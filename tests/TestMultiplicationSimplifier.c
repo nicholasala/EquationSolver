@@ -10,8 +10,8 @@
 #include "../src/model/Token.h"
 
 void test_multiplicationSimplify() {
-    struct Equation *equation = tokenize("x * 4 - 8 = 10 * 16x - 14 + 5 * 5");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("x * 4 - 8 = 10 * 16x - 14 + 5 * 5");
+    Token *tokens = equation->tokens;
     multiplicationSimplify(equation);
     TEST_ASSERT_EQUAL(9, equation->len);
     TEST_ASSERT_FALSE(equation->hasMultiplication);
@@ -45,8 +45,8 @@ void test_multiplicationSimplify() {
 }
 
 void test_multiplicationSimplify2() {
-    struct Equation *equation = tokenize("x + x = 10 * 10");
-    struct Token *tokens = equation->tokens;
+    Equation *equation = tokenize("x + x = 10 * 10");
+    Token *tokens = equation->tokens;
     multiplicationSimplify(equation);
     TEST_ASSERT_EQUAL(5, equation->len);
     TEST_ASSERT_FALSE(equation->hasMultiplication);
