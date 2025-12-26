@@ -11,6 +11,7 @@
 #include "model/GrammarCheckResult.h"
 #include "simplifier/MultiplicationSimplifier.h"
 #include "simplifier/DivisionSimplifier.h"
+#include "simplifier/ExponentiationSimplifier.h"
 
 /**
     * Calculate the value of a given type in the equation
@@ -53,6 +54,10 @@ float solve(const char *text) {
     if (!grammarCheckResult.ok) {
         fprintf(stderr, "%s\n", grammarCheckResult.error);
         exit(1);
+    }
+
+    if (equation->hasExponentiation) {
+        exponentiationSimplify(equation);
     }
 
     if (equation->hasDivision) {

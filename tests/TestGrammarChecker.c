@@ -153,6 +153,13 @@ void test_checkGrammarWrongExponentiationFormat() {
     TEST_ASSERT_EQUAL_CHAR_ARRAY("Exponentiation format not valid: the power can't be a variable", result.error, 47);
 }
 
+void test_checkGrammarWrongExponentiationFormat2() {
+    Equation *equation = tokenize("x ^ 2.4 = 10");
+    GrammarCheckResult result = checkGrammar(equation);
+    TEST_ASSERT_FALSE(result.ok);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("Exponentiation format not valid: the power can't be a floating point number", result.error, 47);
+}
+
 void testGrammarChecker_runTests() {
     RUN_TEST(test_checkGrammarOkEquation);
     RUN_TEST(test_checkGrammarNoXFound);
@@ -175,4 +182,5 @@ void testGrammarChecker_runTests() {
     RUN_TEST(test_checkGrammarExponentiationAfterEquals);
     RUN_TEST(test_checkGrammarWrongFloatingNumberFormat);
     RUN_TEST(test_checkGrammarWrongExponentiationFormat);
+    RUN_TEST(test_checkGrammarWrongExponentiationFormat2);
 }

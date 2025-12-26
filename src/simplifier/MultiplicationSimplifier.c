@@ -1,7 +1,6 @@
 //
 // Created by nicholas on 01/12/2025.
 //
-
 #include "MultiplicationSimplifier.h"
 #include <stdlib.h>
 #include "../model/Token.h"
@@ -9,14 +8,8 @@
 
 Token solveMultiplication(Token *firstFactor, Token *secondFactor) {
     Token result;
-
-    if (firstFactor->type == X || secondFactor->type == X)
-        result.type = X;
-    else
-        result.type = NUMBER;
-
+    result.type = firstFactor->type == X || secondFactor->type == X ? X : NUMBER;
     result.value = firstFactor->value * secondFactor->value;
-
     return result;
 }
 

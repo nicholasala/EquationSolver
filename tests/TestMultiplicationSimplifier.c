@@ -69,7 +69,28 @@ void test_multiplicationSimplify2() {
     free(equation);
 }
 
+void test_multiplicationSimplify3() {
+    Equation *equation = tokenize("x * 7 * 2 * 10 = 2.5 * 8 * 1.2");
+    Token *tokens = equation->tokens;
+    multiplicationSimplify(equation);
+    TEST_ASSERT_EQUAL(3, equation->len);
+    TEST_ASSERT_FALSE(equation->hasMultiplication);
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(140, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(24, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 3;
+    free(tokens);
+    free(equation);
+}
+
 void testMultiplicationSimplifier_runTests() {
     RUN_TEST(test_multiplicationSimplify);
     RUN_TEST(test_multiplicationSimplify2);
+    RUN_TEST(test_multiplicationSimplify3);
 }

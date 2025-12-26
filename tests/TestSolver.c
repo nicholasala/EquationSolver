@@ -64,6 +64,11 @@ void test_solveFloatNumbers2() {
     TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 9.720661, result);
 }
 
+void test_solveExponentiation() {
+    float result = solve("2x^4 + 16^2 = 42.3^2 + 3^5");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 111.018125, result);
+}
+
 void test_solveGrammarError() {
     pid_t pid = fork();
     if (pid == 0) {
@@ -88,5 +93,6 @@ void testSolver_runTests() {
     RUN_TEST(test_solveDivision);
     RUN_TEST(test_solveFloatNumbers);
     RUN_TEST(test_solveFloatNumbers2);
+    RUN_TEST(test_solveExponentiation);
     RUN_TEST(test_solveGrammarError);
 }

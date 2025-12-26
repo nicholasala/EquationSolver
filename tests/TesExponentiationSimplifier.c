@@ -15,7 +15,7 @@ void test_exponentiationSimplify() {
     Equation *equation = tokenize("x ^ 2 + 5^4 = 7.5^3");
     Token *tokens = equation->tokens;
     exponentiationSimplify(equation);
-    TEST_ASSERT_EQUAL(7, equation->len);
+    TEST_ASSERT_EQUAL(5, equation->len);
     TEST_ASSERT_FALSE(equation->hasExponentiation);
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
@@ -60,8 +60,8 @@ void test_exponentiationSimplify2() {
     tokens++;
     TEST_ASSERT_EQUAL(END, tokens->type);
     tokens -= 5;
-    // free(tokens);
-    // free(equation);
+    free(tokens);
+    free(equation);
 }
 
 void testExponentiationSimplifier_runTests() {

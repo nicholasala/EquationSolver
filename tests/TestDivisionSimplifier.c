@@ -92,7 +92,29 @@ void test_divisionSimplify2() {
     free(equation);
 }
 
+void test_divisionSimplify3() {
+    Equation *equation = tokenize("8x / 2 / 2 = 24 / 1.5 / 0.2");
+    Token *tokens = equation->tokens;
+    divisionSimplify(equation);
+    TEST_ASSERT_EQUAL(3, equation->len);
+    TEST_ASSERT_FALSE(equation->hasDivision);
+    TEST_ASSERT_TRUE(equation->hasMultiplication);
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(2, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(80, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 3;
+    free(tokens);
+    free(equation);
+}
+
 void testDivisionSimplifier_runTests() {
     RUN_TEST(test_divisionSimplify);
     RUN_TEST(test_divisionSimplify2);
+    RUN_TEST(test_divisionSimplify3);
 }

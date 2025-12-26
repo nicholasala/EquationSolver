@@ -35,11 +35,11 @@ Some examples of equations accepted by the solver:
 ### Order of operations
 The operations are solved following this order:
 
-1. Divisions (transformed into multiplications)
-2. Multiplications
-3. Additions and subtractions
+1. Exponentiation
+2. Divisions (transformed into multiplications)
+3. Multiplications
+4. Additions and subtractions
 
 ### Future developments
 
-* Exponentiation
 * Parentheses
