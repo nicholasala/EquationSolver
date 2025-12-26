@@ -25,8 +25,15 @@ void multiplicationSimplify(Equation *equation) {
 
     while (cursor->type != END) {
         if ((cursor + 1)->type == TIMES) {
-            equation->tokens[tokenCursor++] = solveMultiplication(cursor, cursor + 2);
-            cursor += 3;
+            Token result = *cursor;
+
+            do {
+                result = solveMultiplication(&result, cursor + 2);
+                cursor += 2;
+            }while ((cursor + 1)->type == TIMES);
+
+            equation->tokens[tokenCursor++] = result;
+            cursor++;
         } else {
             equation->tokens[tokenCursor++] = *cursor;
             cursor++;

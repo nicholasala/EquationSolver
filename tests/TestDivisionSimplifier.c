@@ -93,19 +93,39 @@ void test_divisionSimplify2() {
 }
 
 void test_divisionSimplify3() {
-    Equation *equation = tokenize("8x / 2 / 2 = 24 / 1.5 / 0.2");
+    Equation *equation = tokenize("8x / 2 / 2 = 24 / 1.6 / 0.2");
     Token *tokens = equation->tokens;
     divisionSimplify(equation);
-    TEST_ASSERT_EQUAL(3, equation->len);
+    TEST_ASSERT_EQUAL(11, equation->len);
     TEST_ASSERT_FALSE(equation->hasDivision);
     TEST_ASSERT_TRUE(equation->hasMultiplication);
     TEST_ASSERT_EQUAL(X, tokens->type);
-    TEST_ASSERT_EQUAL(2, tokens->value);
+    TEST_ASSERT_EQUAL(8, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.5, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.5, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(EQUALS, tokens->type);
     tokens++;
     TEST_ASSERT_EQUAL(NUMBER, tokens->type);
-    TEST_ASSERT_EQUAL(80, tokens->value);
+    TEST_ASSERT_EQUAL(24, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 0.625, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(TIMES, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(5, tokens->value);
     tokens++;
     TEST_ASSERT_EQUAL(END, tokens->type);
     tokens -= 3;
