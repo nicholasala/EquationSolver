@@ -25,14 +25,22 @@ Token solveExponentiation(Token *factor, Token *power) {
     * @param {Equation} *equation - pointer to the equation to simplify
     * @return {void}
     */
+//TODO extract code in common with multiplicationSimplify
 void exponentiationSimplify(Equation *equation) {
     Token *cursor = equation->tokens;
     int tokenCursor = 0;
 
     while (cursor->type != END) {
         if ((cursor + 1)->type == EXPONENTIATION) {
-            equation->tokens[tokenCursor++] = solveExponentiation(cursor, cursor + 2);
-            cursor += 3;
+            Token result = *cursor;
+
+            do {
+                result = solveExponentiation(&result, cursor + 2);
+                cursor += 2;
+            }while ((cursor + 1)->type == EXPONENTIATION);
+
+            equation->tokens[tokenCursor++] = result;
+            cursor++;
         } else {
             equation->tokens[tokenCursor++] = *cursor;
             cursor++;
