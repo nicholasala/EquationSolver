@@ -12,12 +12,14 @@
     * @property {int} len - the length of the equation (without considering the terminator token "END")
     * @property {bool} hasMultiplication - equation has contains or not a multiplication
     * @property {bool} hasDivision - equation contains or not a division
+    * @property {bool} hasExponentiation - equation contains or not a division
     */
 typedef struct {
     Token *tokens;
     int len;
     bool hasMultiplication;
     bool hasDivision;
+    bool hasExponentiation;
 } Equation;
 
 #endif //EQUATION_SOLVER_EQUATION_H

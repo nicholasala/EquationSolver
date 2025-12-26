@@ -149,6 +149,37 @@ void test_tokenizeWithDivide() {
     free(tokens);
 }
 
+void test_tokenizeWithExponentiation() {
+    Equation *equation = tokenize("10x ^ 2 = 4^3^5");
+    Token *tokens = equation->tokens;
+    TEST_ASSERT_EQUAL(9, equation->len);
+    TEST_ASSERT_TRUE(equation->hasExponentiation);
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(10, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(2, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(4, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(3, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(5, tokens->value);
+    tokens -= 8;
+    free(tokens);
+}
+
 void test_tokenizeWithoutSpaces() {
     Token *tokens = tokenize("6x+8*-=4+3x/3")->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
@@ -268,6 +299,7 @@ void testTokenizer_runTests() {
     RUN_TEST(test_tokenizeWithdifferentVariableOrder);
     RUN_TEST(test_tokenizeWithTimes);
     RUN_TEST(test_tokenizeWithDivide);
+    RUN_TEST(test_tokenizeWithExponentiation);
     RUN_TEST(test_tokenizeWithoutSpaces);
     RUN_TEST(test_tokenizeWithFloatNumber);
     RUN_TEST(test_tokenizeWithFloatNumber2);

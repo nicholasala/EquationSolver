@@ -63,6 +63,10 @@ Equation* tokenize(const char *equation) {
                 result->tokens[tokenCursor++] = (Token) { DIVIDE, 0 };
                 result->hasDivision = true;
                 break;
+            case EXPONENTIATION:
+                result->tokens[tokenCursor++] = (Token) { EXPONENTIATION, 0 };
+                result->hasExponentiation = true;
+                break;
             case EQUALS:
                 result->tokens[tokenCursor++] = (Token) { EQUALS, 0 };
                 break;

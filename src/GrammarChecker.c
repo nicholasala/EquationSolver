@@ -40,7 +40,7 @@ bool isVariableOrNumber(TokenType type) {
 }
 
 bool isOperator(TokenType type) {
-    return type == PLUS || type == MINUS || type == TIMES || type == DIVIDE;
+    return type == PLUS || type == MINUS || type == TIMES || type == DIVIDE || type == EXPONENTIATION;
 }
 
 bool isEquals(TokenType type) {
@@ -96,6 +96,12 @@ bool hasDivideAfterEquals(Token *tokens) {
     return (cursor + 1)->type == DIVIDE;
 }
 
+bool hasExponentiationAfterEquals(Token *tokens) {
+    Token *cursor = tokens;
+    while (cursor->type != EQUALS) cursor++;
+    return (cursor + 1)->type == EXPONENTIATION;
+}
+
 GrammarCheckResult checkGrammar(Equation *equation) {
     if (!xExists(equation->tokens))
         return (GrammarCheckResult) { false, "No x found" };
@@ -123,6 +129,9 @@ GrammarCheckResult checkGrammar(Equation *equation) {
 
     if (equation->hasDivision && hasDivideAfterEquals(equation->tokens))
         return (GrammarCheckResult) { false, "Equation can't have divide after equals" };
+
+    if (equation->hasExponentiation && hasExponentiationAfterEquals(equation->tokens))
+        return (GrammarCheckResult) { false, "Equation can't have exponentiation after equals" };
 
     return (GrammarCheckResult) { true, "" };
 }

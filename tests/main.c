@@ -7,6 +7,7 @@
 #include "TestGrammarChecker.h"
 #include "TestMultiplicationSimplifier.h"
 #include "TestDivisionSimplifier.h"
+#include "TestExponentiationSimplifier.h"
 
 void setUp() { }
 
@@ -19,6 +20,7 @@ int main() {
     testGrammarChecker_runTests();
     testMultiplicationSimplifier_runTests();
     testDivisionSimplifier_runTests();
+    testExponentiationSimplifier_runTests();
     UNITY_END();
     return 0;
 }

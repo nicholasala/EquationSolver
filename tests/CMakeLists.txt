@@ -5,6 +5,7 @@ add_executable(tests ../Unity/src/unity.h
     ../src/GrammarChecker.c
     ../src/simplifier/MultiplicationSimplifier.c
     ../src/simplifier/DivisionSimplifier.c
+    ../src/simplifier/ExponentiationSimplifier.c
     ../src/model/Token.h
     ../src/model/TokenType.h
     TestTokenizer.c
@@ -18,4 +19,6 @@ add_executable(tests ../Unity/src/unity.h
     TestMultiplicationSimplifier.h
     TestDivisionSimplifier.h
     TestDivisionSimplifier.c
+        TestExponentiationSimplifier.h
+        TesExponentiationSimplifier.c
 )

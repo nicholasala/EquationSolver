@@ -2,7 +2,6 @@
 // Created by nicholas on 19/12/2025.
 //
 #include "DivisionSimplifier.h"
-#include "../model/Equation.h"
 #include "../model/Token.h"
 #include "../model/TokenType.h"
 

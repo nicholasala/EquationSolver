@@ -13,6 +13,7 @@ typedef enum {
   TIMES = '*',
   DIVIDE = '/',
   EQUALS = '=',
+  EXPONENTIATION = '^',
   EMPTY = ' ',
   DOT = '.',
   END = '\n'

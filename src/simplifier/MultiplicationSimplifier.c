@@ -4,7 +4,6 @@
 
 #include "MultiplicationSimplifier.h"
 #include <stdlib.h>
-#include "../model/Equation.h"
 #include "../model/Token.h"
 #include "../model/TokenType.h"
 

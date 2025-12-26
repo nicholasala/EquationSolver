@@ -18,6 +18,8 @@ add_executable(equation_solver main.c
         src/model/Equation.h
         src/simplifier/DivisionSimplifier.h
         src/simplifier/DivisionSimplifier.c
+        src/simplifier/ExponentiationSimplifier.h
+        src/simplifier/ExponentiationSimplifier.c
 )
 
 add_subdirectory(tests)
