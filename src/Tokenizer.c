@@ -34,10 +34,11 @@ Equation* tokenize(const char *equation) {
         exit(1);
     }
 
-    Equation *result = malloc(sizeof(Equation));
-    result->tokens = malloc((MAX_TOKENS + 1) * sizeof(Token));
-    result->hasMultiplication = false;
-    result->hasDivision = false;
+    Equation *generatedEquation = malloc(sizeof(Equation));
+    generatedEquation->tokens = malloc((MAX_TOKENS + 1) * sizeof(Token));
+    generatedEquation->hasMultiplication = false;
+    generatedEquation->hasDivision = false;
+    generatedEquation->hasExponentiation = false;
     int tokenCursor = 0;
 
     for (int i = 0; i < len; i++) {
@@ -45,30 +46,30 @@ Equation* tokenize(const char *equation) {
             case EMPTY:
                 break;
             case X:
-                result->tokens[tokenCursor] = (Token) { X, 1 };
+                generatedEquation->tokens[tokenCursor] = (Token) { X, 1 };
                 if (i < len - 1 && !isDigit(equation[i + 1])) tokenCursor++;
                 if (i == len -1) tokenCursor++;
                 break;
             case PLUS:
-                result->tokens[tokenCursor++] = (Token) { PLUS, 0 };
+                generatedEquation->tokens[tokenCursor++] = (Token) { PLUS, 0 };
                 break;
             case MINUS:
-                result->tokens[tokenCursor++] = (Token) { MINUS, 0 };
+                generatedEquation->tokens[tokenCursor++] = (Token) { MINUS, 0 };
                 break;
             case TIMES:
-                result->tokens[tokenCursor++] = (Token) { TIMES, 0 };
-                result->hasMultiplication = true;
+                generatedEquation->tokens[tokenCursor++] = (Token) { TIMES, 0 };
+                generatedEquation->hasMultiplication = true;
                 break;
             case DIVIDE:
-                result->tokens[tokenCursor++] = (Token) { DIVIDE, 0 };
-                result->hasDivision = true;
+                generatedEquation->tokens[tokenCursor++] = (Token) { DIVIDE, 0 };
+                generatedEquation->hasDivision = true;
                 break;
             case EXPONENTIATION:
-                result->tokens[tokenCursor++] = (Token) { EXPONENTIATION, 0 };
-                result->hasExponentiation = true;
+                generatedEquation->tokens[tokenCursor++] = (Token) { EXPONENTIATION, 0 };
+                generatedEquation->hasExponentiation = true;
                 break;
             case EQUALS:
-                result->tokens[tokenCursor++] = (Token) { EQUALS, 0 };
+                generatedEquation->tokens[tokenCursor++] = (Token) { EQUALS, 0 };
                 break;
             case DOT:
                 float decimalValue = 0;
@@ -79,11 +80,11 @@ Equation* tokenize(const char *equation) {
                     decimalDivider *= 10;
                 }
 
-                if (result->tokens[tokenCursor].type != NUMBER) result->tokens[tokenCursor] = (Token) { NUMBER, 0 };
-                result->tokens[tokenCursor].value += decimalValue;
+                if (generatedEquation->tokens[tokenCursor].type != NUMBER) generatedEquation->tokens[tokenCursor] = (Token) { NUMBER, 0 };
+                generatedEquation->tokens[tokenCursor].value += decimalValue;
 
                 if (i < len - 1 && equation[i + 1] == X) {
-                    result->tokens[tokenCursor].type = X;
+                    generatedEquation->tokens[tokenCursor].type = X;
                     i++;
                 }
 
@@ -97,29 +98,30 @@ Equation* tokenize(const char *equation) {
                         value = value * 10 + charToFloat(equation[++i]);
 
                     if (i < len - 1 && equation[i + 1] == DOT) {
-                        result->tokens[tokenCursor] = (Token) { NUMBER, value };
+                        generatedEquation->tokens[tokenCursor] = (Token) { NUMBER, value };
                         break;
                     }
 
                     if (i < len - 1 && equation[i + 1] == X) {
-                        result->tokens[tokenCursor].type = X;
+                        generatedEquation->tokens[tokenCursor].type = X;
                         i++;
-                    } else if (result->tokens[tokenCursor].type != X) {
-                        result->tokens[tokenCursor].type = NUMBER;
+                    } else if (generatedEquation->tokens[tokenCursor].type != X) {
+                        generatedEquation->tokens[tokenCursor].type = NUMBER;
                     }
 
-                    result->tokens[tokenCursor++].value = value;
+                    generatedEquation->tokens[tokenCursor++].value = value;
                 } else {
-                    free(result->tokens);
+                    free(generatedEquation->tokens);
+                    free(generatedEquation);
                     fprintf(stderr, "%s %c %s\n", "Character", equation[i], "not valid");
                     exit(1);
                 }
         }
     }
 
-    result->tokens[tokenCursor] = (Token) { END, 0 };
-    result->len = tokenCursor;
-    Token *reallocatedTokens = realloc(result->tokens, (tokenCursor + 1) * sizeof(Token));
-    if (reallocatedTokens != NULL) result->tokens = reallocatedTokens;
-    return result;
+    generatedEquation->tokens[tokenCursor] = (Token) { END, 0 };
+    generatedEquation->len = tokenCursor;
+    Token *reallocatedTokens = realloc(generatedEquation->tokens, (tokenCursor + 1) * sizeof(Token));
+    if (reallocatedTokens != NULL) generatedEquation->tokens = reallocatedTokens;
+    return generatedEquation;
 }

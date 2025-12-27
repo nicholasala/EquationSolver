@@ -2,7 +2,6 @@
 // Created by nicholas on 26/12/2025.
 //
 #include "ExponentiationSimplifier.h"
-
 #include <stdlib.h>
 
 Token solveExponentiation(Token *factor, Token *power) {

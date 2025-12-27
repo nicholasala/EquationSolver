@@ -47,12 +47,18 @@ float calculateValueOnRight(Token *tokens, TokenType type) {
     return - calculateValue(tokens, type);
 }
 
+void releaseEquation(Equation *equation) {
+    free(equation->tokens);
+    free(equation);
+}
+
 float solve(const char *text) {
     Equation *equation = tokenize(text);
     GrammarCheckResult grammarCheckResult = checkGrammar(equation);
 
     if (!grammarCheckResult.ok) {
         fprintf(stderr, "%s\n", grammarCheckResult.error);
+        releaseEquation(equation);
         exit(1);
     }
 
@@ -72,7 +78,6 @@ float solve(const char *text) {
     float xValue = calculateValue(equation->tokens, X);
     if (xValue != 0) result = calculateValueOnRight(equation->tokens, NUMBER) / xValue;
 
-    free(equation->tokens);
-    free(equation);
+    releaseEquation(equation);
     return result;
 }

@@ -74,6 +74,10 @@ bool beginsWithDivide(Token *tokens) {
     return tokens->type == DIVIDE;
 }
 
+bool beginsWithExponentiation(Token *tokens) {
+    return tokens->type == EXPONENTIATION;
+}
+
 bool endsWithOperator(Equation *equation) {
     return isOperator(equation->tokens[equation->len - 1].type);
 }
@@ -102,6 +106,21 @@ bool hasExponentiationAfterEquals(Token *tokens) {
     return (cursor + 1)->type == EXPONENTIATION;
 }
 
+bool hasDecimalValue(float number) {
+    return number > (int) number;
+}
+
+bool hasCorrectExponentiationFormat(Token *tokens) {
+    Token *cursor = tokens;
+
+    while (cursor->type != END) {
+        if (cursor->type == EXPONENTIATION && ((cursor+1)->type == X || hasDecimalValue((cursor+1)->value))) return false;
+        cursor++;
+    }
+
+    return true;
+}
+
 GrammarCheckResult checkGrammar(Equation *equation) {
     if (!xExists(equation->tokens))
         return (GrammarCheckResult) { false, "No x found" };
@@ -118,6 +137,9 @@ GrammarCheckResult checkGrammar(Equation *equation) {
     if (equation->hasDivision && beginsWithDivide(equation->tokens))
         return (GrammarCheckResult) { false, "Equation can't begin with divide" };
 
+    if (equation->hasExponentiation && beginsWithExponentiation(equation->tokens))
+        return (GrammarCheckResult) { false, "Equation can't begin with exponentiation" };
+
     if (endsWithOperator(equation))
         return (GrammarCheckResult) { false, "Equation can't end with operator" };
 
@@ -132,6 +154,9 @@ GrammarCheckResult checkGrammar(Equation *equation) {
 
     if (equation->hasExponentiation && hasExponentiationAfterEquals(equation->tokens))
         return (GrammarCheckResult) { false, "Equation can't have exponentiation after equals" };
+
+    if (equation->hasExponentiation && !hasCorrectExponentiationFormat(equation->tokens))
+        return (GrammarCheckResult) { false, "Exponentiation format not valid: the power can't be a variable or a floating point number" };
 
     return (GrammarCheckResult) { true, "" };
 }

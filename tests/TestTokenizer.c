@@ -48,10 +48,12 @@ void test_tokenize() {
     TEST_ASSERT_EQUAL(END, tokens->type);
     tokens -= 11;
     free(tokens);
+    free(equation);
 }
 
 void test_tokenizeWithdifferentVariableOrder() {
-    Token *tokens = tokenize("x + x8= 62")->tokens;
+    Equation *equation = tokenize("x + x8= 62");
+    Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(1, tokens->value);
     tokens++;
@@ -68,6 +70,7 @@ void test_tokenizeWithdifferentVariableOrder() {
     TEST_ASSERT_EQUAL(END, tokens->type);
     tokens -= 5;
     free(tokens);
+    free(equation);
 }
 
 void test_tokenizeWithTimes() {
@@ -110,6 +113,7 @@ void test_tokenizeWithTimes() {
     TEST_ASSERT_EQUAL(5, tokens->value);
     tokens -= 12;
     free(tokens);
+    free(equation);
 }
 
 void test_tokenizeWithDivide() {
@@ -147,6 +151,7 @@ void test_tokenizeWithDivide() {
     TEST_ASSERT_EQUAL(5, tokens->value);
     tokens -= 10;
     free(tokens);
+    free(equation);
 }
 
 void test_tokenizeWithExponentiation() {
@@ -178,10 +183,66 @@ void test_tokenizeWithExponentiation() {
     TEST_ASSERT_EQUAL(5, tokens->value);
     tokens -= 8;
     free(tokens);
+    free(equation);
+}
+
+void test_tokenizeWithExponentiation2() {
+    Equation *equation = tokenize("2x^4 + 16^2 = 42.3^2 + 3^5");
+    Token *tokens = equation->tokens;
+    TEST_ASSERT_EQUAL(15, equation->len);
+    TEST_ASSERT_TRUE(equation->hasExponentiation);
+    TEST_ASSERT_EQUAL(X, tokens->type);
+    TEST_ASSERT_EQUAL(2, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 4, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(16, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(2, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EQUALS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(4, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 42.3, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(2, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(PLUS, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(3, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(EXPONENTIATION, tokens->type);
+    tokens++;
+    TEST_ASSERT_EQUAL(NUMBER, tokens->type);
+    TEST_ASSERT_EQUAL(5, tokens->value);
+    tokens++;
+    TEST_ASSERT_EQUAL(END, tokens->type);
+    tokens -= 17;
+    free(tokens);
+    free(equation);
 }
 
 void test_tokenizeWithoutSpaces() {
-    Token *tokens = tokenize("6x+8*-=4+3x/3")->tokens;
+    Equation *equation = tokenize("6x+8*-=4+3x/3");
+    Token *tokens = equation->tokens;
     TEST_ASSERT_EQUAL(X, tokens->type);
     TEST_ASSERT_EQUAL(6, tokens->value);
     tokens++;
@@ -212,6 +273,7 @@ void test_tokenizeWithoutSpaces() {
     TEST_ASSERT_EQUAL(END, tokens->type);
     tokens -= 11;
     free(tokens);
+    free(equation);
 }
 
 void test_tokenizeWithFloatNumber() {
@@ -251,6 +313,7 @@ void test_tokenizeWithFloatNumber() {
     TEST_ASSERT_EQUAL(END, tokens->type);
     tokens -= 11;
     free(tokens);
+    free(equation);
 }
 
 void test_tokenizeWithFloatNumber2() {
@@ -265,6 +328,7 @@ void test_tokenizeWithFloatNumber2() {
     TEST_ASSERT_EQUAL(EQUALS, tokens->type);
     tokens -= 1;
     free(tokens);
+    free(equation);
 }
 
 //In order to test the exit with an error code called by the tokenize function, we need to create a separate process so the tests process is not stopped
@@ -300,6 +364,7 @@ void testTokenizer_runTests() {
     RUN_TEST(test_tokenizeWithTimes);
     RUN_TEST(test_tokenizeWithDivide);
     RUN_TEST(test_tokenizeWithExponentiation);
+    RUN_TEST(test_tokenizeWithExponentiation2);
     RUN_TEST(test_tokenizeWithoutSpaces);
     RUN_TEST(test_tokenizeWithFloatNumber);
     RUN_TEST(test_tokenizeWithFloatNumber2);
