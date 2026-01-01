@@ -93,6 +93,7 @@ Equation* tokenize(const char *equation) {
             default:
                 if(isDigit(equation[i])) {
                     float value = charToFloat(equation[i]);
+                    int previousCharIndex = i - 1;
 
                     while(i < len - 1 && isDigit(equation[i + 1]))
                         value = value * 10 + charToFloat(equation[++i]);
@@ -105,7 +106,9 @@ Equation* tokenize(const char *equation) {
                     if (i < len - 1 && equation[i + 1] == X) {
                         generatedEquation->tokens[tokenCursor].type = X;
                         i++;
-                    } else if (generatedEquation->tokens[tokenCursor].type != X) {
+                    } else if (previousCharIndex >= 0 && equation[previousCharIndex] == X) {
+                        generatedEquation->tokens[tokenCursor].type = X;
+                    } else {
                         generatedEquation->tokens[tokenCursor].type = NUMBER;
                     }
 

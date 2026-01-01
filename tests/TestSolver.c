@@ -59,14 +59,14 @@ void test_solveFloatNumbers() {
     TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 2, result);
 }
 
-void test_solveExponentiation() {
-    float result = solve("2x^4 + 16^2 = 42.3^2 + 3^5");
-    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 111.018125, result);
-}
-
 void test_solveFloatNumbers2() {
     float result = solve("983.456x + 78.4 / 2 = 42.8x * 7.2 + 8.897 * 789.2 - 43x");
     TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 9.720661, result);
+}
+
+void test_solveExponentiation() {
+    float result = solve("2x^4 + 16^2 = 42.3^2 + 3^5");
+    TEST_ASSERT_FLOAT_WITHIN(FLOAT_DELTA, 111.018125, result);
 }
 
 void test_solveGrammarError() {
@@ -92,7 +92,7 @@ void testSolver_runTests() {
     RUN_TEST(test_solveMultiplication);
     RUN_TEST(test_solveDivision);
     RUN_TEST(test_solveFloatNumbers);
-    RUN_TEST(test_solveExponentiation);
     RUN_TEST(test_solveFloatNumbers2);
+    RUN_TEST(test_solveExponentiation);
     RUN_TEST(test_solveGrammarError);
 }
