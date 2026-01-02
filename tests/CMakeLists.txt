@@ -3,6 +3,7 @@ add_executable(tests ../Unity/src/unity.h
     ../src/Tokenizer.c
     ../src/Solver.c
     ../src/GrammarChecker.c
+    ../src/simplifier/SimplifierUtils.c
     ../src/simplifier/MultiplicationSimplifier.c
     ../src/simplifier/DivisionSimplifier.c
     ../src/simplifier/ExponentiationSimplifier.c

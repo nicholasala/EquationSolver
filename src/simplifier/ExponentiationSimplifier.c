@@ -2,7 +2,9 @@
 // Created by nicholas on 26/12/2025.
 //
 #include "ExponentiationSimplifier.h"
-#include <stdlib.h>
+#include "SimplifierUtils.h"
+#include "../model/Token.h"
+#include "../model/TokenType.h"
 
 Token solveExponentiation(Token *factor, Token *power) {
     Token result;
@@ -24,31 +26,7 @@ Token solveExponentiation(Token *factor, Token *power) {
     * @param {Equation} *equation - pointer to the equation to simplify
     * @return {void}
     */
-//TODO extract code in common with multiplicationSimplify
 void exponentiationSimplify(Equation *equation) {
-    Token *cursor = equation->tokens;
-    int tokenCursor = 0;
-
-    while (cursor->type != END) {
-        if ((cursor + 1)->type == EXPONENTIATION) {
-            Token result = *cursor;
-
-            do {
-                result = solveExponentiation(&result, cursor + 2);
-                cursor += 2;
-            }while ((cursor + 1)->type == EXPONENTIATION);
-
-            equation->tokens[tokenCursor++] = result;
-            cursor++;
-        } else {
-            equation->tokens[tokenCursor++] = *cursor;
-            cursor++;
-        }
-    }
-
-    equation->tokens[tokenCursor] = (Token) { END, 0 };
-    equation->len = tokenCursor;
+    simplify(equation, EXPONENTIATION, solveExponentiation);
     equation->hasExponentiation = false;
-    Token *reallocatedTokens = realloc(equation->tokens, (tokenCursor + 1) * sizeof(Token));
-    if (reallocatedTokens != NULL) equation->tokens = reallocatedTokens;
 }
