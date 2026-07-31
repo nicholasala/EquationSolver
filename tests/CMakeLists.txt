@@ -3,6 +3,7 @@ add_executable(tests ../Unity/src/unity.h
     ../src/Tokenizer.c
     ../src/Solver.c
     ../src/GrammarChecker.c
+    ../src/Printer.c
     ../src/simplifier/SimplifierUtils.c
     ../src/simplifier/MultiplicationSimplifier.c
     ../src/simplifier/DivisionSimplifier.c
@@ -20,6 +21,6 @@ add_executable(tests ../Unity/src/unity.h
     TestMultiplicationSimplifier.h
     TestDivisionSimplifier.h
     TestDivisionSimplifier.c
-        TestExponentiationSimplifier.h
-        TesExponentiationSimplifier.c
+    TestExponentiationSimplifier.h
+    TesExponentiationSimplifier.c
 )

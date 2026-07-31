@@ -21,7 +21,16 @@ cmake --build . --target equation_solver
 Execute passing the equation to solve as argument:
 
 ```
-./equation_solver "x = 10"
+./equation_solver "4x + 2 * 8 = 64 / 2"
+```
+
+Output with passages:
+
+```
+4x + 2 * 8 = 64 / 2 
+4x + 2 * 8 = 64 * 0.5 
+4x + 16 = 32 
+Equation result: 4
 ```
 
 ### Examples
@@ -44,4 +53,5 @@ The operations are solved following this order:
 
 ### Future developments
 
-* Parentheses
+* Adding parentheses
+* Managing exponentation on x (quadratic or higher order equations)

@@ -22,6 +22,8 @@ add_executable(equation_solver main.c
         src/simplifier/ExponentiationSimplifier.c
         src/simplifier/SimplifierUtils.h
         src/simplifier/SimplifierUtils.c
+        src/Printer.h
+        src/Printer.c
 )
 
 add_subdirectory(tests)

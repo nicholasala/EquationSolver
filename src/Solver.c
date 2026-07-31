@@ -12,6 +12,7 @@
 #include "simplifier/MultiplicationSimplifier.h"
 #include "simplifier/DivisionSimplifier.h"
 #include "simplifier/ExponentiationSimplifier.h"
+#include "Printer.h"
 
 /**
     * Calculate the value of a given type in the equation
@@ -52,6 +53,11 @@ void releaseEquation(Equation *equation) {
     free(equation);
 }
 
+/**
+    * Solve the equation following this operations order: exponentation, division, multiplication.
+    * @param {char} *text - the equation to solve
+    * @return {float} result of the equation
+    */
 float solve(const char *text) {
     Equation *equation = tokenize(text);
     GrammarCheckResult grammarCheckResult = checkGrammar(equation);
@@ -62,16 +68,21 @@ float solve(const char *text) {
         exit(1);
     }
 
+    print(equation);
+
     if (equation->hasExponentiation) {
         exponentiationSimplify(equation);
+        print(equation);
     }
 
     if (equation->hasDivision) {
         divisionSimplify(equation);
+        print(equation);
     }
 
     if (equation->hasMultiplication) {
         multiplicationSimplify(equation);
+        print(equation);
     }
 
     float result = 0;
